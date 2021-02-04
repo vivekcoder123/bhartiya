@@ -27,21 +27,35 @@
         <link href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
 
     </head>
+    <style>
+      #global-loader {
+      position: absolute;
+      z-index: 50000;
+      background: white;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center; }
+      #global-loader img {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        top: 43%;
+        left: 0;
+        margin: 0 auto;
+        text-align: center; }
+      a{
+        cursor: pointer;
+      }
+    </style>
 @livewireStyles
 @yield('css')
 <body>
-  <!--<div class="pre-loader">
-    <div class="pre-loader-box">
-      
-      <div class='loader-progress' id="progress_div">
-        <div class='bar' id='bar1'></div>
-      </div>
-      <div class='percent' id='percent1'>80%</div>
-      <div class="loading-text">
-        Loading...
-      </div>
-    </div>
-  </div>-->
+  
 
       @include('includes.header')
 
@@ -76,7 +90,7 @@
                 {!! implode('', $errors->all('<div class="alert alert-danger">:message</div>')) !!}
               @endif
             
-
+              
 
 
               @yield('content')
@@ -114,6 +128,7 @@
 
         <script>
             $('#datatable').DataTable();
+
         </script>
         <script src="{{asset('assets/js/app.js')}}"></script>
         
