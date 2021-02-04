@@ -9,6 +9,7 @@ class Enquiry extends Model
 {
     use HasFactory;
     const ENQUIRY_SUBMITTED = 0;
+    const ENQUIRY_SUBMITTED_NAME = "SUBMITTED";
     const CUSTOMER_CONTACTED = 2;
     const DOCUMENTS_UPLOAD_PENDING = 3;
     const APPLICATION_SENT_FOR_SIGNATURE = 4;

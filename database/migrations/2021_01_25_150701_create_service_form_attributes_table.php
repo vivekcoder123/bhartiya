@@ -16,6 +16,7 @@ class CreateServiceFormAttributesTable extends Migration
         Schema::create('service_form_attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('show_name');
             $table->unsignedBigInteger('attribute_type_id');
             $table->foreign('attribute_type_id')->references('id')->on('attribute_types');
             $table->timestamps();

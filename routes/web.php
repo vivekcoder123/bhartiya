@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\BankController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +20,64 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    If(Auth::check())
+        {
+            return redirect('/login');
+        }else{
+            return redirect('/login');
+        }
+});
+
+Auth::routes();
+
+Route::group(['middleware' => 'auth'], function () {
+
+	Route::prefix('admin')->group(function () {
+
+		/******************Start dashboard*******************/
+
+		Route::resource('/dashboard', DashboardController::class);
+
+		/******************End dashboard*******************/
+
+
+		/******************Start User*******************/
+
+		Route::resource('/users', UserController::class);
+
+		/********************End User********************/
+
+
+		/******************Start Bank*******************/
+
+		Route::resource('/banks', BankController::class);
+
+		/********************End Bank********************/
+
+
+		/******************Start Service*******************/
+
+		Route::resource('/services', ServiceController::class);
+
+		/********************End Service********************/
+
+
+		/******************Start Staff*******************/
+
+		Route::resource('/staffs', StaffController::class);
+
+		/********************End Staff********************/
+
+
+		/******************Start Designation*******************/
+
+		Route::resource('/designations', DesignationController::class);
+
+		/********************End Designation********************/
+
+
+
+
+	});
 });
