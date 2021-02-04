@@ -24,6 +24,8 @@
         <link href="{{asset('assets/css/jquery-ui.min.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('assets/css/metisMenu.min.css')}}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="{{asset('plugins/select2/select2.min.css')}}">
+        <link rel="stylesheet" href="{{asset('plugins/ion-rangeslider/ion.rangeSlider.css')}}">
         <link href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
 
     </head>
@@ -51,16 +53,20 @@
       a{
         cursor: pointer;
       }
+      .select2-container{
+        width:100% !important;
+      }
     </style>
-@livewireStyles
 @yield('css')
 <body>
-  
 
+    <div id="global-loader">
+        <img src="{{asset('assets/images/loader.svg')}}" alt="loader">
+    </div>
       @include('includes.header')
 
-    
-    
+
+
 
       @include('includes.sidebar')
         <div class="page-wrapper">
@@ -69,7 +75,7 @@
 
             <div class="container-fluid">
 
-            
+
               @if ($message = Session::get('success'))
                 <div class="my-3">
                   <div class="alert alert-success text-center">
@@ -89,12 +95,12 @@
               @if($errors->any())
                 {!! implode('', $errors->all('<div class="alert alert-danger">:message</div>')) !!}
               @endif
-            
-              
+
+
 
 
               @yield('content')
-            
+
 
               <!--Footer-->
 
@@ -120,6 +126,9 @@
         <script src="{{asset('plugins/jvectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
         <script src="{{asset('plugins/jvectormap/jquery-jvectormap-us-aea-en.js')}}"></script>
         <script src="{{asset('assets/pages/jquery.analytics_dashboard.init.js')}}"></script>
+        <script src="{{asset('plugins/select2/select2.min.js')}}"></script>
+        <script src="{{asset('plugins/ion-rangeslider/ion.rangeSlider.min.js')}}"></script>
+        <script src="{{asset('assets/pages/jquery.rangeslider.init.js')}}"></script>
 
         <!-- App js -->
         <!-- Required datatable js -->
@@ -128,14 +137,13 @@
 
         <script>
             $('#datatable').DataTable();
-
+            $(document).ready(function(){
+                $("#global-loader").hide();
+                $(".select2").select2();
+            });
         </script>
         <script src="{{asset('assets/js/app.js')}}"></script>
-        
-        @livewireScripts
         @yield('js')
 
     </body>
-
 </html>
- 

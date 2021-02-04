@@ -40,7 +40,7 @@ File: Leftbar
   width: 100%;
   position: relative;
   min-height: 100vh;
-  padding: 0 15px 60px 15px;
+  padding: 60px 15px 60px 15px;
 }
 
 .left-sidenav-menu {
@@ -1607,10 +1607,10 @@ p {
 
 /*!
  * Waves v0.7.6
- * http://fian.my.id/Waves 
- * 
- * Copyright 2014-2018 Alfiana E. Sibuea and other contributors 
- * Released under the MIT license 
+ * http://fian.my.id/Waves
+ *
+ * Copyright 2014-2018 Alfiana E. Sibuea and other contributors
+ * Released under the MIT license
  * https://github.com/fians/Waves/blob/master/LICENSE */
 .waves-effect {
   position: relative;

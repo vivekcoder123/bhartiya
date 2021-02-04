@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 		/******************Start Service*******************/
 
+        Route::post('/save_service_form_fields',[ServiceController::class,'save_service_form_fields']);
 		Route::resource('/services', ServiceController::class);
 
 		/********************End Service********************/
