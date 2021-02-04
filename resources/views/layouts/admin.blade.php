@@ -52,7 +52,7 @@
         cursor: pointer;
       }
     </style>
-@livewireStyles
+
 @yield('css')
 <body>
   
@@ -127,12 +127,11 @@
         <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
         <script>
-            $('#datatable').DataTable();
+            //$('#datatable').DataTable();
 
         </script>
         <script src="{{asset('assets/js/app.js')}}"></script>
-        
-        @livewireScripts
+   
         @yield('js')
 
     </body>

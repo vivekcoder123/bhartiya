@@ -52,6 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
 		/******************Start Bank*******************/
 
 		Route::resource('/banks', BankController::class);
+		Route::get('/get-banks', [BankController::class,'getBanks'])->name('get-banks');
+
 
 		/********************End Bank********************/
 
