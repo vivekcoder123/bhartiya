@@ -12,6 +12,16 @@
                 </li>
 
                 <li>
+                    <a href="javascript: void(0);"><i class="ti-user"></i><span>Staffs</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="{{url('/admin/staffs')}}"><i class="ti-control-record"></i>Staff Lists</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{url('/admin/locations')}}"><i class="ti-control-record"></i>Locations</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{url('/admin/designations')}}"><i class="ti-control-record"></i>Designations</a></li>
+                         
+                    </ul>
+                </li>
+
+                <li>
                     <a href="javascript: void(0);"><i class="ti-server"></i><span>Apps</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>

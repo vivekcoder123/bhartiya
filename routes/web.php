@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BankController;
 
@@ -76,8 +77,17 @@ Route::group(['middleware' => 'auth'], function () {
 		/******************Start Designation*******************/
 
 		Route::resource('/designations', DesignationController::class);
+		Route::get('/get-designations', [DesignationController::class,'getdesignations'])->name('get-designations');
 
 		/********************End Designation********************/
+
+
+		/******************Start Location*******************/
+
+		Route::resource('/locations', LocationController::class);
+		Route::get('/get-locations', [LocationController::class,'getlocations'])->name('get-locations');
+
+		/********************End Location********************/
 
 
 

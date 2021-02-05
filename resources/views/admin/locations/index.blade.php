@@ -7,9 +7,9 @@
             <div class="card mt-3">
                 <div class="card-body">
                     <div class="card-title">
-                        {{ __('Banks List') }}
-                        <button style="float: right; font-weight: 900;" class="btn btn-primary btn-sm mb-2" type="button"  data-toggle="modal" data-target="#CreateBankModal">
-                            Create Bank
+                        {{ __('Locations List') }}
+                        <button style="float: right; font-weight: 900;" class="btn btn-primary btn-sm mb-2" type="button"  data-toggle="modal" data-target="#CreateLocationModal">
+                            Create Location
                         </button>
                     </div>
                     <div class="table-responsive">
@@ -29,13 +29,13 @@
     </div>
 </div>
 
-<!-- Create Bank Modal -->
-<div class="modal" id="CreateBankModal">
+<!-- Create Location Modal -->
+<div class="modal" id="CreateLocationModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Bank Create</h4>
+                <h4 class="modal-title">Location Create</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
@@ -46,7 +46,7 @@
                     </button>
                 </div>
                 <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
-                    <strong>Success!</strong>Bank was added successfully.
+                    <strong>Success!</strong>Location was added successfully.
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -58,20 +58,20 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="SubmitCreateBankForm">Create</button>
+                <button type="button" class="btn btn-success" id="SubmitCreateLocationForm">Create</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Edit Bank Modal -->
-<div class="modal" id="EditBankModal">
+<!-- Edit Location Modal -->
+<div class="modal" id="EditLocationModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Bank Edit</h4>
+                <h4 class="modal-title">Location Edit</h4>
                 <button type="button" class="close modelClose" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
@@ -82,40 +82,40 @@
                     </button>
                 </div>
                 <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
-                    <strong>Success!</strong>Bank was added successfully.
+                    <strong>Success!</strong>Location was updated successfully.
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div id="EditBankModalBody">
+                <div id="EditLocationModalBody">
                     
                 </div>
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="SubmitEditBankForm">Update</button>
+                <button type="button" class="btn btn-success" id="SubmitEditLocationForm">Update</button>
                 <button type="button" class="btn btn-danger modelClose" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Delete Bank Modal -->
-<div class="modal" id="DeleteBankModal">
+<!-- Delete Location Modal -->
+<div class="modal" id="DeleteLocationModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Bank Delete</h4>
+                <h4 class="modal-title">Location Delete</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <h4>Are you sure want to delete this Bank?</h4>
+                <h4>Are you sure want to delete this Location?</h4>
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="SubmitDeleteBankForm">Yes</button>
+                <button type="button" class="btn btn-danger" id="SubmitDeleteLocationForm">Yes</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
             </div>
         </div>
@@ -138,7 +138,7 @@
             pageLength: 5,
             // scrollX: true,
             "order": [[ 0, "desc" ]],
-            ajax: '{{ route('get-banks') }}',
+            ajax: '{{ route('get-locations') }}',
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
@@ -146,8 +146,8 @@
             ]
         });
 
-        // Create Bank Ajax request.
-        $('#SubmitCreateBankForm').click(function(e) {
+        // Create Location Ajax request.
+        $('#SubmitCreateLocationForm').click(function(e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -155,7 +155,7 @@
                 }
             });
             $.ajax({
-                url: "{{ route('banks.store') }}",
+                url: "{{ route('locations.store') }}",
                 method: 'post',
                 data: {
                     name: $('#name').val(),
@@ -174,7 +174,7 @@
                         $('.datatable').DataTable().ajax.reload();
                         setInterval(function(){ 
                             $('.alert-success').hide();
-                            $('#CreateBankModal').modal('hide');
+                            $('#CreateLocationModal').modal('hide');
                             location.reload();
                         }, 2000);
                     }
@@ -182,32 +182,32 @@
             });
         });
 
-        // Get single Bank in EditModel
+        // Get single Location in EditModel
         $('.modelClose').on('click', function(){
-            $('#EditBankModal').hide();
+            $('#EditLocationModal').hide();
         });
         var id;
-        $('body').on('click', '#getEditBankData', function(e) {
+        $('body').on('click', '#getEditLocationData', function(e) {
             // e.preventDefault();
             $('.alert-danger').html('');
             $('.alert-danger').hide();
             id = $(this).data('id');
             $.ajax({
-                url: "banks/"+id+"/edit",
+                url: "locations/"+id+"/edit",
                 method: 'GET',
                 // data: {
                 //     id: id,
                 // },
                 success: function(result) {
                     console.log(result);
-                    $('#EditBankModalBody').html(result.html);
-                    $('#EditBankModal').show();
+                    $('#EditLocationModalBody').html(result.html);
+                    $('#EditLocationModal').show();
                 }
             });
         });
 
-        // Update Bank Ajax request.
-        $('#SubmitEditBankForm').click(function(e) {
+        // Update Location Ajax request.
+        $('#SubmitEditLocationForm').click(function(e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -215,10 +215,10 @@
                 }
             });
             $.ajax({
-                url: "banks/"+id,
+                url: "locations/"+id,
                 method: 'PUT',
                 data: {
-                    name: $('#editBank').val(),
+                    name: $('#editLocation').val(),
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(result) {
@@ -234,7 +234,7 @@
                         $('.datatable').DataTable().ajax.reload();
                         setInterval(function(){ 
                             $('.alert-success').hide();
-                            $('#EditBankModal').hide();
+                            $('#EditLocationModal').hide();
                             location.reload();
                         }, 2000);
                     }
@@ -242,12 +242,12 @@
             });
         });
 
-        // Delete Bank Ajax request.
+        // Delete Location Ajax request.
         var deleteID;
         $('body').on('click', '#getDeleteId', function(){
             deleteID = $(this).data('id');
         })
-        $('#SubmitDeleteBankForm').click(function(e) {
+        $('#SubmitDeleteLocationForm').click(function(e) {
             e.preventDefault();
             var id = deleteID;
             $.ajaxSetup({
@@ -256,13 +256,13 @@
                 }
             });
             $.ajax({
-                url: "banks/"+id,
+                url: "locations/"+id,
                 method: 'DELETE',
                 data:{"_token": "{{ csrf_token() }}"},
                 success: function(result) {
                     
                         $('.datatable').DataTable().ajax.reload();
-                        $('#DeleteBankModal').modal('hide');
+                        $('#DeleteLocationModal').modal('hide');
                   
                 }
             });

@@ -7,9 +7,9 @@
             <div class="card mt-3">
                 <div class="card-body">
                     <div class="card-title">
-                        {{ __('Banks List') }}
-                        <button style="float: right; font-weight: 900;" class="btn btn-primary btn-sm mb-2" type="button"  data-toggle="modal" data-target="#CreateBankModal">
-                            Create Bank
+                        {{ __('Designations List') }}
+                        <button style="float: right; font-weight: 900;" class="btn btn-primary btn-sm mb-2" type="button"  data-toggle="modal" data-target="#CreateDesignationModal">
+                            Create Designation
                         </button>
                     </div>
                     <div class="table-responsive">
@@ -29,13 +29,13 @@
     </div>
 </div>
 
-<!-- Create Bank Modal -->
-<div class="modal" id="CreateBankModal">
+<!-- Create Designation Modal -->
+<div class="modal" id="CreateDesignationModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Bank Create</h4>
+                <h4 class="modal-title">Designation Create</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
@@ -46,7 +46,7 @@
                     </button>
                 </div>
                 <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
-                    <strong>Success!</strong>Bank was added successfully.
+                    <strong>Success!</strong>Designation was added successfully.
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -58,20 +58,20 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="SubmitCreateBankForm">Create</button>
+                <button type="button" class="btn btn-success" id="SubmitCreateDesignationForm">Create</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Edit Bank Modal -->
-<div class="modal" id="EditBankModal">
+<!-- Edit Designation Modal -->
+<div class="modal" id="EditDesignationModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Bank Edit</h4>
+                <h4 class="modal-title">Designation Edit</h4>
                 <button type="button" class="close modelClose" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
@@ -82,40 +82,40 @@
                     </button>
                 </div>
                 <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
-                    <strong>Success!</strong>Bank was added successfully.
+                    <strong>Success!</strong>Designation was updated successfully.
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div id="EditBankModalBody">
+                <div id="EditDesignationModalBody">
                     
                 </div>
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="SubmitEditBankForm">Update</button>
+                <button type="button" class="btn btn-success" id="SubmitEditDesignationForm">Update</button>
                 <button type="button" class="btn btn-danger modelClose" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Delete Bank Modal -->
-<div class="modal" id="DeleteBankModal">
+<!-- Delete Designation Modal -->
+<div class="modal" id="DeleteDesignationModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Bank Delete</h4>
+                <h4 class="modal-title">Designation Delete</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <h4>Are you sure want to delete this Bank?</h4>
+                <h4>Are you sure want to delete this Designation?</h4>
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="SubmitDeleteBankForm">Yes</button>
+                <button type="button" class="btn btn-danger" id="SubmitDeleteDesignationForm">Yes</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
             </div>
         </div>
@@ -138,7 +138,7 @@
             pageLength: 5,
             // scrollX: true,
             "order": [[ 0, "desc" ]],
-            ajax: '{{ route('get-banks') }}',
+            ajax: '{{ route('get-designations') }}',
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
@@ -147,7 +147,7 @@
         });
 
         // Create Bank Ajax request.
-        $('#SubmitCreateBankForm').click(function(e) {
+        $('#SubmitCreateDesignationForm').click(function(e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -155,7 +155,7 @@
                 }
             });
             $.ajax({
-                url: "{{ route('banks.store') }}",
+                url: "{{ route('designations.store') }}",
                 method: 'post',
                 data: {
                     name: $('#name').val(),
@@ -172,42 +172,42 @@
                         $('.alert-danger').hide();
                         $('.alert-success').show();
                         $('.datatable').DataTable().ajax.reload();
-                        setInterval(function(){ 
+                         
+                        $('#CreateDesignationModal input').val('');
+                        setInterval(function(){                        
                             $('.alert-success').hide();
-                            $('#CreateBankModal').modal('hide');
-                            location.reload();
-                        }, 2000);
+                        }, 3000);
                     }
                 }
             });
         });
 
-        // Get single Bank in EditModel
+        // Get single Designation in EditModel
         $('.modelClose').on('click', function(){
-            $('#EditBankModal').hide();
+            $('#EditDesignationModal').hide();
         });
         var id;
-        $('body').on('click', '#getEditBankData', function(e) {
+        $('body').on('click', '#getEditDesignationData', function(e) {
             // e.preventDefault();
             $('.alert-danger').html('');
             $('.alert-danger').hide();
             id = $(this).data('id');
             $.ajax({
-                url: "banks/"+id+"/edit",
+                url: "designations/"+id+"/edit",
                 method: 'GET',
                 // data: {
                 //     id: id,
                 // },
                 success: function(result) {
                     console.log(result);
-                    $('#EditBankModalBody').html(result.html);
-                    $('#EditBankModal').show();
+                    $('#EditDesignationModalBody').html(result.html);
+                    $('#EditDesignationModal').show();
                 }
             });
         });
 
-        // Update Bank Ajax request.
-        $('#SubmitEditBankForm').click(function(e) {
+        // Update Designation Ajax request.
+        $('#SubmitEditDesignationForm').click(function(e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -215,10 +215,10 @@
                 }
             });
             $.ajax({
-                url: "banks/"+id,
+                url: "designations/"+id,
                 method: 'PUT',
                 data: {
-                    name: $('#editBank').val(),
+                    name: $('#editDesignation').val(),
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(result) {
@@ -234,20 +234,18 @@
                         $('.datatable').DataTable().ajax.reload();
                         setInterval(function(){ 
                             $('.alert-success').hide();
-                            $('#EditBankModal').hide();
-                            location.reload();
-                        }, 2000);
+                        }, 3000);
                     }
                 }
             });
         });
 
-        // Delete Bank Ajax request.
+        // Delete Designation Ajax request.
         var deleteID;
         $('body').on('click', '#getDeleteId', function(){
             deleteID = $(this).data('id');
         })
-        $('#SubmitDeleteBankForm').click(function(e) {
+        $('#SubmitDeleteDesignationForm').click(function(e) {
             e.preventDefault();
             var id = deleteID;
             $.ajaxSetup({
@@ -256,13 +254,13 @@
                 }
             });
             $.ajax({
-                url: "banks/"+id,
+                url: "designations/"+id,
                 method: 'DELETE',
                 data:{"_token": "{{ csrf_token() }}"},
                 success: function(result) {
                     
                         $('.datatable').DataTable().ajax.reload();
-                        $('#DeleteBankModal').modal('hide');
+                        $('#DeleteDesignationModal').modal('hide');
                   
                 }
             });

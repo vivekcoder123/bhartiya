@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Designation;
+use App\Models\Location;
 
-class DesignationController extends Controller
+class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,16 +14,16 @@ class DesignationController extends Controller
      */
     public function index()
     {
-        return view('admin.Designations.index');
+        return view('admin.locations.index');
     }
 
-    public function getDesignations(Request $request, Designation $designation)
+    public function getLocations(Request $request, Location $location)
     {
-        $data = $designation->getData();
+        $data = $location->getData();
         return \DataTables::of($data)
             ->addColumn('Actions', function($data) {
-                return '<button type="button" class="btn btn-success btn-sm" id="getEditDesignationData" data-id="'.$data->id.'">Edit</button>
-                    <button type="button" data-id="'.$data->id.'" data-toggle="modal" data-target="#DeleteDesignationModal" class="btn btn-danger btn-sm" id="getDeleteId">Delete</button>';
+                return '<button type="button" class="btn btn-success btn-sm" id="getEditLocationData" data-id="'.$data->id.'">Edit</button>
+                    <button type="button" data-id="'.$data->id.'" data-toggle="modal" data-target="#DeleteLocationModal" class="btn btn-danger btn-sm" id="getDeleteId">Delete</button>';
             })
             ->rawColumns(['Actions'])
             ->make(true);
@@ -45,7 +45,7 @@ class DesignationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Designation $designation)
+    public function store(Request $request, Location $location)
     {
         $validator = \Validator::make($request->all(), [
             'name' => 'required'
@@ -55,9 +55,9 @@ class DesignationController extends Controller
             return response()->json(['errors' => $validator->errors()->all()]);
         }
 
-        $designation->storeData($request->all());
+        $location->storeData($request->all());
 
-        return response()->json(['success'=>'Designation added successfully']);
+        return response()->json(['success'=>'Location added successfully']);
     
     }
 
@@ -80,12 +80,12 @@ class DesignationController extends Controller
      */
     public function edit($id)
     {
-        $designation = new Designation;
-        $data = $designation->findData($id);
+        $location = new Location;
+        $data = $location->findData($id);
 
         $html = '<div class="form-group">
                     <label for="Name">Name:</label>
-                    <input type="text" class="form-control" name="name" id="editDesignation" value="'.$data->name.'">
+                    <input type="text" class="form-control" name="name" id="editLocation" value="'.$data->name.'">
                 </div>';
 
         return response()->json(['html'=>$html]);
@@ -108,10 +108,10 @@ class DesignationController extends Controller
             return response()->json(['errors' => $validator->errors()->all()]);
         }
 
-        $designation = new Designation;
-        $designation->updateData($id, $request->all());
+        $location = new Location;
+        $location->updateData($id, $request->all());
 
-        return response()->json(['success'=>'Designation updated successfully']);
+        return response()->json(['success'=>'Location updated successfully']);
     
     }
 
@@ -123,9 +123,9 @@ class DesignationController extends Controller
      */
     public function destroy($id)
     {
-        $designation = new Designation;
-        $designation->deleteData($id);
+        $location = new Location;
+        $location->deleteData($id);
 
-        return response()->json(['success'=>'Designation deleted successfully']);
+        return response()->json(['success'=>'Location deleted successfully']);
     }
 }
