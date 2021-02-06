@@ -8,17 +8,18 @@
                 <div class="card-body">
                     <div class="card-title">
                         {{ __('Banks List') }}
-                        <button style="float: right; font-weight: 900;" class="btn btn-primary btn-sm mb-2" type="button"  data-toggle="modal" data-target="#CreateBankModal">
-                            Create Bank
+                        <button style="float: right; font-weight: 900;" class="btn btn-primary mb-2" type="button"  data-toggle="modal" data-target="#CreateBankModal">
+                            Create New Bank
                         </button>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-bordered datatable">
+                        <table class="table table-bordered datatable table-striped">
                             <thead>
                                 <tr>
                                     <th>Id</th>
                                     <th>Name</th>
-                                    <th width="150" class="text-center">Action</th>
+                                    <th>Status</th>
+                                    <th width="150" class="text-center">Actions</th>
                                 </tr>
                             </thead>
                         </table>
@@ -122,7 +123,22 @@
     </div>
 </div>
 
-
+<!-- Change Status Bank Modal -->
+<div class="modal" id="StatusBankModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h4>Bank Status Changed Successfully.</h4>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @stop
 
@@ -142,6 +158,7 @@
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
+                {data: 'status', name: 'status'},
                 {data: 'Actions', name: 'Actions',orderable:true,searchable:true,sClass:'text-center'},
             ]
         });
@@ -172,11 +189,11 @@
                         $('.alert-danger').hide();
                         $('.alert-success').show();
                         $('.datatable').DataTable().ajax.reload();
-                        setInterval(function(){ 
+                         
+                        $('#CreateBankModal input').val('');
+                        setInterval(function(){                        
                             $('.alert-success').hide();
-                            $('#CreateBankModal').modal('hide');
-                            location.reload();
-                        }, 2000);
+                        }, 3000);
                     }
                 }
             });
@@ -234,9 +251,7 @@
                         $('.datatable').DataTable().ajax.reload();
                         setInterval(function(){ 
                             $('.alert-success').hide();
-                            $('#EditBankModal').hide();
-                            location.reload();
-                        }, 2000);
+                        }, 3000);
                     }
                 }
             });
@@ -267,6 +282,34 @@
                 }
             });
         });
+
+        $(document).on("click","#getUpdateId",function(){
+            id = $(this).data('id');
+            
+            $.ajax({
+                method:'POST',
+                url:`/admin/banks/change-status`,
+                data:{id,"_token":"{{csrf_token()}}"}
+            }).then(response=>{
+              if(response == '1'){
+                $('.datatable').DataTable().ajax.reload();
+                $('#StatusBankModal').modal('show');
+                setInterval(function(){ 
+                        $('#StatusBankModal').modal('hide');
+                }, 4000);
+              }
+              if(response == '0'){
+                $('.datatable').DataTable().ajax.reload();
+                $('#StatusBankModal').modal('show');
+                setInterval(function(){ 
+                        $('#StatusBankModal').modal('hide');
+                }, 4000);
+              }
+            }).fail(error=>{
+                console.log('error',error);
+            });
+        });
+
     });
 </script>
 @stop

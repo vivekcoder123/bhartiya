@@ -8,8 +8,8 @@
                 <div class="card-body">
                     <div class="card-title">
                         {{ __('Locations List') }}
-                        <button style="float: right; font-weight: 900;" class="btn btn-primary btn-sm mb-2" type="button"  data-toggle="modal" data-target="#CreateLocationModal">
-                            Create Location
+                        <button style="float: right; font-weight: 900;" class="btn btn-primary mb-2" type="button"  data-toggle="modal" data-target="#CreateLocationModal">
+                            Create New Location
                         </button>
                     </div>
                     <div class="table-responsive">
@@ -82,7 +82,7 @@
                     </button>
                 </div>
                 <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
-                    <strong>Success!</strong>Location was updated successfully.
+                    <strong>Success! </strong>Location was updated successfully.
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -172,11 +172,11 @@
                         $('.alert-danger').hide();
                         $('.alert-success').show();
                         $('.datatable').DataTable().ajax.reload();
-                        setInterval(function(){ 
+                         
+                        $('#CreateLocationModal input').val('');
+                        setInterval(function(){                        
                             $('.alert-success').hide();
-                            $('#CreateLocationModal').modal('hide');
-                            location.reload();
-                        }, 2000);
+                        }, 3000);
                     }
                 }
             });
@@ -234,9 +234,7 @@
                         $('.datatable').DataTable().ajax.reload();
                         setInterval(function(){ 
                             $('.alert-success').hide();
-                            $('#EditLocationModal').hide();
-                            location.reload();
-                        }, 2000);
+                        }, 3000);
                     }
                 }
             });

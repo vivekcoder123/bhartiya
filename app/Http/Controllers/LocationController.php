@@ -22,8 +22,8 @@ class LocationController extends Controller
         $data = $location->getData();
         return \DataTables::of($data)
             ->addColumn('Actions', function($data) {
-                return '<button type="button" class="btn btn-success btn-sm" id="getEditLocationData" data-id="'.$data->id.'">Edit</button>
-                    <button type="button" data-id="'.$data->id.'" data-toggle="modal" data-target="#DeleteLocationModal" class="btn btn-danger btn-sm" id="getDeleteId">Delete</button>';
+                return '<button type="button" class="btn btn-success btn-sm" id="getEditLocationData" data-id="'.$data->id.'"><i class="fa fa-edit"> Edit</i></button>
+                    <button type="button" data-id="'.$data->id.'" data-toggle="modal" data-target="#DeleteLocationModal" class="btn btn-danger btn-sm" id="getDeleteId"><i class="ti-trash"> Delete</i></button>';
             })
             ->rawColumns(['Actions'])
             ->make(true);

@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 		/******************Start Bank*******************/
-
+		Route::post('/banks/change-status',[BankController::class,'changeStatus']);
 		Route::resource('/banks', BankController::class);
 		Route::get('/get-banks', [BankController::class,'getBanks'])->name('get-banks');
 
@@ -62,6 +62,9 @@ Route::group(['middleware' => 'auth'], function () {
 		/******************Start Service*******************/
 
         Route::post('/save_service_form_fields',[ServiceController::class,'save_service_form_fields']);
+        Route::put('services/update/{id}',[ServiceController::class,'updateService']);
+        //Route::delete('services/{id}',[ServiceController::class,'deleteService']);
+        Route::post('/services/change-status',[ServiceController::class,'changeStatus']);
 		Route::resource('/services', ServiceController::class);
 
 		/********************End Service********************/

@@ -21,9 +21,11 @@ class BankController extends Controller
     {
         $data = $bank->getData();
         return \DataTables::of($data)
-            ->addColumn('Actions', function($data) {
-                return '<button type="button" class="btn btn-success btn-sm" id="getEditBankData" data-id="'.$data->id.'">Edit</button>
-                    <button type="button" data-id="'.$data->id.'" data-toggle="modal" data-target="#DeleteBankModal" class="btn btn-danger btn-sm" id="getDeleteId">Delete</button>';
+            ->addColumn('status', function($data) {
+                return $data->status=='1'?'Active':'Not Active';
+            })->addColumn('Actions', function($data) {
+                return '<button type="button" class="btn btn-success btn-sm" id="getEditBankData" data-id="'.$data->id.'"><i class="fa fa-edit"> Edit</i></button>
+                    <button type="button" class="btn btn-warning btn-sm " id="getUpdateId" data-id="'.$data->id.'"><i class="ti-loop"> Change Status</i></button>';
             })
             ->rawColumns(['Actions'])
             ->make(true);
@@ -121,11 +123,33 @@ class BankController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $bank = new Bank;
-        $bank->deleteData($id);
+    // public function destroy($id)
+    // {
+    //     $bank = new Bank;
+    //     $bank->deleteData($id);
 
-        return response()->json(['success'=>'Bank deleted successfully']);
+    //     return response()->json(['success'=>'Bank deleted successfully']);
+    // }
+
+    public function changeStatus(Request $request)
+    {
+        
+      try{
+            $id = $request->id;
+
+         if(!Bank::where('id', $request->id)->exists()){
+            throw new Exception("Bank not found!");
+         }
+         $bank = Bank::where('id', $request->id)->first();
+         $bank->status = $bank->status=='1'?'0':'1';
+         $bank->save();
+         return $bank->status;
+        }catch(Exception $e){
+            
+            return $e->getMessage();
+            
+        }
+
+       
     }
 }

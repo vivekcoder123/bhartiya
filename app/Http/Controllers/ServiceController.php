@@ -42,6 +42,7 @@ class ServiceController extends Controller
                 $new_service['fields'] = collect($attributes_data);
                 return $new_service;
             });
+
             return view('admin.services.index',compact('banks','services'));
         }catch(Exception $e){
             return redirect()->back()->with('error',$e->getMessage().",line:".$e->getLine());
@@ -169,5 +170,78 @@ class ServiceController extends Controller
             DB::rollback();
             return redirect()->back()->with('error',$e->getMessage().",line:".$e->getLine());
         }
+    }
+
+    public function updateService(Request $request,$id)
+    {
+        try{
+
+            $validator = Validator::make($request->all(),[
+                'service_type' => 'required|unique:services',
+                'banks_array' => 'required',
+                'tenure_range' => 'required'
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            $tenure_range = explode(";",$request->tenure_range);
+            $min_tenure = $tenure_range[0];
+            $max_tenure = $tenure_range[1];
+            $service_data = [
+                'service_type'=>$request->service_type,
+                'min_tenure'=>$min_tenure,
+                'max_tenure'=>$max_tenure
+            ];
+            DB::beginTransaction();
+            $service = Service::where('id',$id)->update($service_data);
+            $banks_array = $request->banks_array;
+            $service_banks_data = [];
+            $current_time = date("Y-m-d H:i:s");
+            ServiceBank::where('service_id',$id)->delete();
+            foreach($banks_array as $bank){
+                $service_banks_data[] = ['bank_id'=>$bank,'service_id'=>$id,'created_at'=>$current_time,'updated_at'=>$current_time];
+            }
+            ServiceBank::insert($service_banks_data);
+            DB::commit();
+            return redirect()->back()->with('success',"Service data update successfully!");
+
+        }catch(Exception $e){
+            DB::rollback();
+            return redirect()->back()->with('error',$e->getMessage().",line:".$e->getLine());
+        }
+    }
+
+    // public function deleteService($id)
+    // {
+    //     try{
+    //         Service::where('id',$id)->delete();
+    //         return 'success';
+    //     }catch(Exception $e){
+    //         return $e->getMessage();
+    //     }
+    // }
+
+
+
+    public function changeStatus(Request $request)
+    {
+        
+      try{
+            $id = $request->id;
+
+         if(!Service::where('id', $request->id)->exists()){
+            throw new Exception("Service not found!");
+         }
+         $service = Service::where('id', $request->id)->first();
+         $service->status = $service->status=='1'?'0':'1';
+         $service->save();
+         return $service->status;
+        }catch(Exception $e){
+            
+            return $e->getMessage();
+            
+        }
+
+       
     }
 }

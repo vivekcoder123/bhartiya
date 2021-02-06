@@ -8,8 +8,8 @@
                 <div class="card-body">
                     <div class="card-title">
                         {{ __('Designations List') }}
-                        <button style="float: right; font-weight: 900;" class="btn btn-primary btn-sm mb-2" type="button"  data-toggle="modal" data-target="#CreateDesignationModal">
-                            Create Designation
+                        <button style="float: right; font-weight: 900;" class="btn btn-primary mb-2" type="button"  data-toggle="modal" data-target="#CreateDesignationModal">
+                            Create New Designation
                         </button>
                     </div>
                     <div class="table-responsive">
