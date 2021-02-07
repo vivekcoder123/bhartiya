@@ -1,5 +1,32 @@
 @extends('layouts.admin')
 
+@section('css')
+<style type="text/css">
+
+  .cart-total {
+  width: 100%;
+  display: block;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 20px; }
+  .cart-total h3 {
+    font-size: 16px;
+    margin-bottom: 20px; }
+  .cart-total p {
+    width: 100%;
+    display: block; }
+    .cart-total p span {
+      display: block;
+      width: 43%; }
+    .cart-total p.total-price span {
+      text-transform: uppercase; }
+      .cart-total p.total-price span:last-child {
+        color: #000000;
+        font-weight: 600; }
+  .cart-total hr {
+    background: rgba(255, 255, 255, 0.1); }
+</style>
+@stop
+
 @section('content')
 
 <div class="container">
@@ -27,21 +54,8 @@
                             <th>Permissions</th>
                             <th>Incentives</th>
                             <th>Business Targets</th>
-                            <th>Email</th>
-                            <th>Mobile No.</th>
-                            <th>Location</th>
-                            <th>D.O.J.</th>
-                            <th>Address</th>
-                            <th>Current Address</th>
-                            <th>Emergency Contact</th>
-                            <th>Blook Group</th>
-                            <th>Qualification</th>
-                            <th>D.O.B.</th>
-                            <th>PAN No.</th>
-                            <th>Aadhar No.</th>
-                            <th>Marital Status</th>
-                            <th>Family Members</th>
-                            <th>Anniversary</th>
+                            <th>Details</th>
+                            
                             
                         </tr>
                     </thead>
@@ -58,30 +72,26 @@
                             <td>{{$staff->reportTo->name}}</td>
                             <td>{{$staff->designation->name}}</td>
                             <td>
-                            @foreach(explode(',',$staff->permissions) as $p)  
-                                <button class="btn btn-secondary btn-sm" type="button">{{$p}}</button>
-                             @endforeach
+
+                                <button type="button" class="btn btn-outline-purple btn-round dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Permissions <i class="mdi mdi-chevron-down"></i></button>
+
+                                
+                                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+                                        
+                                        @foreach(explode(',',$staff->permissions) as $p)  
+                                            <a class="dropdown-item" href="#">{{$p}}</a>
+                                         @endforeach
+                                        
+                                    </div>
+                            
                             </td>
 
-                            <td><button type="button" class="btn btn-info viewIncentives" data-values="{{$staff->incentives}}"><i class="fa fa-eye"> View & Update </i></button></td>
+                            <td><button type="button" class="btn btn-outline-secondary btn-round  viewIncentives" data-values="{{$staff->incentives}}" data-staff_id="{{$staff->id}}"><i class="fa fa-eye"></i> View </button></td>
                                 
-                            <td><button type="button" class="btn btn-info viewtargets" data-values="{{$staff->targets}}"><i class="fa fa-eye"> View & Update </i></button></td>
+                            <td><button type="button" class="btn btn-outline-secondary btn-round  viewtargets" data-values="{{$staff->targets}}" data-staff_id="{{$staff->id}}"><i class="fa fa-eye"></i> View</button></td>
 
-                            <td>{{$staff->email}}</td>
-                            <td>{{$staff->mobile_number}}</td>
-                            <td>{{$staff->location->name}}</td>
-                            <td>{{date("j M Y",strtotime($staff->doj))}}</td>
-                            <td>{{$staff->address}}</td>
-                            <td>{{$staff->current_address}}</td>
-                            <td>{{$staff->emergency_contact}}</td>
-                            <td>{{$staff->blood_group}}</td>
-                            <td>{{$staff->qualification}}</td>
-                            <td>{{date("j M Y",strtotime($staff->dob))}}</td>
-                            <td>{{$staff->pan}}</td>
-                            <td>{{$staff->aadhar}}</td>
-                            <td>{{$staff->marital_status}}</td>
-                            <td>{{$staff->family_members}}</td>
-                            <td>{{date("j M Y",strtotime($staff->anniversary))}}</td>
+                            <td><button type="button" class="btn btn-outline-dark btn-round viewdetails" data-values="{{$staff}}" data-staff_id="{{$staff->id}}">More</button></td>
+                
                             
                             
                         </tr>
@@ -95,18 +105,65 @@
     </div>
 </div>
 
-<div class="modal fade show" id="banksModal" tabindex="-1" role="dialog" >
+<div class="modal fade show" id="incentivesModal" tabindex="-1" role="dialog" >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title mt-0" id="exampleModalLabel">Banks</h5>
+            <h5 class="modal-title mt-0" id="exampleModalLabel">Incentives</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
             </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body ">
+            <div class="card">                                       
+                <div class="card-body"> 
+                    <h4 class="header-title mt-0 mb-3">Incentives</h4>
 
+                    <div class="slimscroll activity-scroll">
+                            
+                                
+                        <div class="incentivesList activity" style="max-height: 250px; overflow: auto;"></div>
+                        <h4 class="header-title mt-0 mb-3">Create Incentives</h4>
+                        <form class="needs-validation was-validated" action="{{url('/admin/save_staff_incentive')}}" method="POST">
+                            {{ csrf_field() }}
+                            <div id="form-content" class="incentivesForm">
+
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade show" id="detailsModal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title mt-0" id="exampleModalLabel">Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body ">
+            <div class="card">                                       
+                <div class="card-body"> 
+                    <div class="detailsData">
+
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
@@ -399,6 +456,129 @@
                     console.log('error',error);
                 });
             });
+
+
+
+        $(".viewIncentives").on("click",function(){
+            var incentives = $(this).data("values");
+            console.log(incentives);
+            var staff_id = $(this).data("staff_id");
+            
+            var htmlList = '';
+            var htmlForm = '';
+            
+            incentives.forEach(function(incentive){
+                htmlList += `<div class="activity-info">
+                                <div class="icon-info-activity">
+                                    <i class="mdi mdi-checkbox-marked-circle-outline bg-soft-success"></i>
+                                </div>
+                                <div class="activity-info-text">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="m-0 w-75">${incentive.incentive}</h6>
+                                        
+                                    </div>
+                                    <p class="text-muted mt-3">${incentive.remarks} 
+                                    </p>
+                                </div>
+                            </div>`;
+            });
+
+            htmlForm += `<div class="col-md-12 mb-3">
+                        <label for="validationCustom01">Incentive Amount</label>
+                        <input type="text" class="form-control" id="validationCustom01" placeholder="Amount" name="incentive" type="number" required="">
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Please enter amount.</div>
+                    </div>
+                    <input type="hidden" value="${staff_id}" name="staff_id" >
+                    <div class="col-md-12 mb-3">
+                        <label for="validationCustom02">Remarks</label>
+                        <input type="text" class="form-control" id="validationCustom02" type="text" placeholder="Remarks" name="remarks" >
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Please enter remarks (optional).</div>
+                    </div>`;
+
+            $("#incentivesModal .incentivesList").html(htmlList);
+            $("#incentivesModal .incentivesForm").html(htmlForm);
+            
+            $("#incentivesModal").modal("show");
+        });
+
+
+$(".viewdetails").on("click",function(){
+            var d = $(this).data("values");
+            console.log(d);
+            var staff_id = $(this).data("staff_id");
+            
+            var htmlList =`<div class="cart-wrap ftco-animate">
+                    <div class="cart-total mb-3">
+                      <h5>Persional Details</h5> 
+                      <hr>
+                      <p class="d-flex total-price">
+                        <span>Email</span>
+                        <span id="final_price">${d.email}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Mobile Number</span>
+                        <span id="final_price">${d.mobile_number}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Address</span>
+                        <span id="final_price">${d.address}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Location</span>
+                        <span id="final_price">${d.location.name}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Emergency Contact</span>
+                        <span id="final_price">${d.emergency_contact}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Current Address</span>
+                        <span id="final_price">${d.current_address}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Blook Group</span>
+                        <span id="final_price">${d.blood_group}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Qualification</span>
+                        <span id="final_price">${d.qualification}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Date Of Birth</span>
+                        <span id="final_price">${d.dob}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>PAN No.</span>
+                        <span id="final_price">${d.pan}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Aadhar No.</span>
+                        <span id="final_price">${d.aadhar}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Marital Status</span>
+                        <span id="final_price">${d.marital_status}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Family Members</span>
+                        <span id="final_price">${d.family_members}</span>
+                      </p>
+                      <p class="d-flex total-price">
+                        <span>Anniversary</span>
+                        <span id="final_price">${d.anniversary}</span>
+                      </p>
+                    </div>
+                    
+                  </div>`;
+          
+            $("#detailsModal .detailsData").html(htmlList);
+            
+            $("#detailsModal").modal("show");
+        });
+
+
 
 
     </script>

@@ -72,6 +72,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 		/******************Start Staff*******************/
 
+		Route::post('/save_staff_incentive',[StaffController::class,'save_staff_intensive']);
 		Route::resource('/staffs', StaffController::class);
 
 		/********************End Staff********************/

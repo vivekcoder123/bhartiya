@@ -56,6 +56,11 @@
       .select2-container{
         width:100% !important;
       }
+      .tab-content > .tab-pane:not(.active) {
+          display: block;
+          height: 0;
+          overflow-y: hidden;
+      }
     </style>
 @yield('css')
 <body>

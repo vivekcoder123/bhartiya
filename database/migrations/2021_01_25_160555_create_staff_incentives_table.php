@@ -18,7 +18,7 @@ class CreateStaffIncentivesTable extends Migration
             $table->unsignedBigInteger('staff_id')->nullable();
             $table->foreign('staff_id')->references('id')->on('staff');
             $table->decimal('incentive',22,2);
-            $table->string('remarks')->nullable();
+            $table->string('remarks')->default('no remarks');
             $table->timestamps();
         });
     }

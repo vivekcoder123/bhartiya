@@ -28,7 +28,7 @@ class StaffController extends Controller
             $services = Service::orderBy('service_type')->get(['id','service_type']);
             $locations = Location::orderBy('name')->get();
             $designations = Designation::orderBy('name')->get();
-            $staffs = Staff::with('designation:id,name','location:id,name','incentives:id,incentive,remarks','services:id,service_type','targets:id,name','reportTo:id,name')->orderBy('name')->get();
+            $staffs = Staff::with('designation:id,name','location:id,name','incentives:id,incentive,remarks,staff_id','services:id,service_type','targets:id,name','reportTo:id,name')->orderBy('name')->get();
             //return $staffs;
             return view('admin.staffs.index',compact('staffs','locations','designations','services'));
         }catch(Exception $e){
@@ -100,5 +100,26 @@ class StaffController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function save_staff_intensive(Request $request){
+        try{
+            DB::beginTransaction();
+            $current_time = date("Y-m-d H:i:s");
+                $data_to_insert[] = [
+                    'staff_id'=>$request->staff_id,
+                    'incentive'=>$request->incentive,
+                    'remarks'=>$request->remarks,
+                    'created_at'=>$current_time,
+                    'updated_at'=>$current_time
+                ];
+           
+            StaffIncentive::insert($data_to_insert);
+            DB::commit();
+            return redirect()->back()->with('success',"Staff Intensive data saved successfully!");
+        }catch(Exception $e){
+            DB::rollback();
+            return redirect()->back()->with('error',$e->getMessage().",line:".$e->getLine());
+        }
     }
 }
