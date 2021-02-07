@@ -10,4 +10,32 @@ class Staff extends Model
     use HasFactory;
     const SINGLE = "S";
     const MARRIED = "M";
+
+    protected $table = 'staff';
+    protected $guarded = ["id"];
+
+    public function designation(){
+    	return $this->hasOne('App\Models\Designation','id','designation_id');
+    }
+
+    public function reportTo(){
+    	return $this->hasOne('App\Models\Staff','id','report_to_id');
+    }
+
+    public function location(){
+    	return $this->hasOne('App\Models\Location','id','location_id');
+    }
+
+    public function services(){
+    	return $this->belongsToMany('App\Models\Service','staff_services','staff_id','service_id');
+    }
+
+    public function incentives(){
+    	return $this->hasMany('App\Models\StaffIncentive','staff_id','id');
+    }
+
+    public function targets(){
+    	return $this->belongsToMany('App\Models\BusinessTarget','staff_business_targets','staff_id','business_target_id');
+    }
+
 }

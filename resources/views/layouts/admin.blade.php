@@ -60,9 +60,9 @@
 @yield('css')
 <body>
 
-    <div id="global-loader">
+   <!--  <div id="global-loader">
         <img src="{{asset('assets/images/loader.svg')}}" alt="loader">
-    </div>
+    </div> -->
       @include('includes.header')
 
 
