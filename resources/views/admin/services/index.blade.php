@@ -10,8 +10,8 @@
                 <div class="card-body">
                     <div class="card-title">
                         Services List
-                        <button style="float: right; font-weight: 900;" class="btn btn-primary  mb-2" type="button"  data-toggle="modal" data-target="#CreateServiceModal">
-                            Create New Service
+                        <button style="float: right; font-weight: 900;" class="btn btn-primary  mb-2" type="button"  data-toggle="modal" data-target="#createServiceModal">
+                            Create Service Staff
                         </button>
                     </div>
                     <div class="table-responsive">
@@ -70,6 +70,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="modal fade show" id="createServiceModal" tabindex="-1" role="dialog" >
     <div class="modal-dialog" role="document">

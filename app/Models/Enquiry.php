@@ -24,4 +24,38 @@ class Enquiry extends Model
     const REJECTED_RELOOK = 22;
     const SALARY = "Salary";
     const BUSINESS = "Business";
+
+    public function service(){
+        return $this->hasOne('App\Models\Service','id','service_id');
+    }
+    public function user(){
+        return $this->hasOne('App\Models\User','id','user_id');
+    }
+    public function relationship_manager(){
+        return $this->hasOne('App\Models\Staff','id','relationship_manager_id');
+    }
+    public function bank(){
+        return $this->hasOne('App\Models\Bank','id','bank_id');
+    }
+    public function propose_bank(){
+        return $this->hasOne('App\Models\Bank','id','propose_bank_id');
+    }
+    public function designation(){
+        return $this->hasOne('App\Models\Designation','id','designation_id');
+    }
+    public function location(){
+        return $this->hasOne('App\Models\Location','id','location_id');
+    }
+
+    public function enquiry_status(){
+        return $this->hasMany('App\Models\EnquiryStatusTracking','enquiry_id','id');
+    }
+
+    public function enquiry_activiy(){
+        return $this->hasMany('App\Models\EnquiryActivityTracking','enquiry_id','id');
+    }
+
+    public function existing_loan(){
+        return $this->hasMany('App\Models\ExistingLoanDetail','enquiry_id','id');
+    }
 }

@@ -18,6 +18,7 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Name</th>
+                                    <th>Status</th>
                                     <th width="150" class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -122,6 +123,23 @@
     </div>
 </div>
 
+<!-- Change Status Location Modal -->
+<div class="modal" id="StatusLocationModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h4>Location Status Changed Successfully.</h4>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 @stop
@@ -142,6 +160,7 @@
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
+                {data: 'status', name: 'status'},
                 {data: 'Actions', name: 'Actions',orderable:true,searchable:true,sClass:'text-center'},
             ]
         });
@@ -263,6 +282,34 @@
                         $('#DeleteLocationModal').modal('hide');
                   
                 }
+            });
+        });
+
+        //change Location status
+        $(document).on("click","#getUpdateId",function(){
+            id = $(this).data('id');
+            
+            $.ajax({
+                method:'POST',
+                url:`/admin/locations/change-status`,
+                data:{id,"_token":"{{csrf_token()}}"}
+            }).then(response=>{
+              if(response == '1'){
+                $('.datatable').DataTable().ajax.reload();
+                $('#StatusLocationModal').modal('show');
+                setInterval(function(){ 
+                        $('#StatusLocationModal').modal('hide');
+                }, 4000);
+              }
+              if(response == '0'){
+                $('.datatable').DataTable().ajax.reload();
+                $('#StatusLocationModal').modal('show');
+                setInterval(function(){ 
+                        $('#StatusLocationModal').modal('hide');
+                }, 4000);
+              }
+            }).fail(error=>{
+                console.log('error',error);
             });
         });
     });

@@ -1090,7 +1090,7 @@
                                 <div class="form-group row">
                                     <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Password</label>
                                     <div class="col-lg-9">
-                                        <input name="password" type="password" class="form-control" placeholder="password">
+                                        <input name="password" type="password" class="form-control staffRquiredField1" placeholder="password" value="${staff.password}">
                                     </div>
                                 </div><!--end form-group-->
                             </div><!--end col-->

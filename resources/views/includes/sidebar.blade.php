@@ -22,6 +22,22 @@
                 </li>
 
                 <li>
+                    <a href="javascript: void(0);"><i class="dripicons-user-group"></i><span>Users</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="{{url('/admin/users')}}"><i class="ti-control-record"></i>User Lists</a></li>
+                         
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);"><i class=" dripicons-user-id"></i><span>Clients</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="{{url('/admin/enquiries')}}"><i class="ti-control-record"></i>Clients Enquiries</a></li>
+                         
+                    </ul>
+                </li>
+
+                <li>
                     <a href="javascript: void(0);"><i class="ti-server"></i><span>Apps</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>

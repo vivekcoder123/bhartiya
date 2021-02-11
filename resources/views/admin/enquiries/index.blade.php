@@ -48,67 +48,54 @@
                     <thead>
                         <tr>
                             <th>Actions</th>
-                            <th>Employee Id</th>
+                            <th>Id</th>
                             <th>Name</th>
-                            <th>Report To</th>
-                            <th>Services</th>
-                            <th>Designation</th>
-                            <th>Permissions</th>
-                            <th>Incentives</th>
-                            <th>Business Targets</th>
-                            <th>Details</th>
-                            
+                            <th>Applied Service</th>
+                            <th>Relationship Manager</th>
+                            <th>Loan Amount Applied</th>
+                            <th>Eligible Loan Amount</th>
+                            <th>Time</th>
+                            <th>Tenure</th>
+                            <th>Applied Bank</th>
+                            <th>Assigned Bank</th>
+                            <th>User Details</th>
                             
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($staffs as $staff)
+                        @foreach($enquiries as $e)
                         <tr>
                             <td>
-                                <i class="fa fa-edit btn btn btn-outline-success getEditStaffData" id="getEditStaffData" data-value="{{collect($staff)}}" data-staff_id="{{$staff->id}}"></i>   
+                                <i class="fa fa-edit btn btn btn-outline-success getEditStaffData" id="getEditStaffData" data-value="{{collect($e)}}" data-staff_id="{{$e->id}}"></i>   
 
                             </td>
-                            <td>{{$staff->employee_id}}</td>
-                            <td>{{$staff->name}}</td>
-                            <td>{{$staff->reportTo->name}}</td>
+                            <td>{{$e->id}}</td>
+                            <td>{{$e->user->name}}</td>
+                            <td>{{$e->service->service_type}}</td>
+                            <td>{{$e->relationship_manager->name}}</td>
+                            <td>{{$e->loan_amount}}</td>
                             <td>
 
-                                <button type="button" class="btn btn-outline-purple btn-round dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Services <i class="mdi mdi-chevron-down"></i></button>
+                                <button type="button" class="btn btn-outline-purple btn-round dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Assingn Loan Amount<i class="mdi mdi-chevron-down"></i></button>
 
                                 
                                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
                                         
-                                        @foreach($staff->services as $s)  
-                                            <a class="dropdown-item" href="#">{{$s->service_type}}</a>
-                                         @endforeach
+                                          
+                                            <a class="dropdown-item" href="#"></a>
+                                         
                                         
                                     </div>
                             
                             </td>
-                            <td>{{$staff->designation->name}}</td>
-                            <td>
+                            <td>{{$e->time}}</td>
+                            <td>{{$e->tenure}}</td>
+                            <td>{{$e->bank->name}}</td>
 
-                                <button type="button" class="btn btn-outline-purple btn-round dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Permissions <i class="mdi mdi-chevron-down"></i></button>
+                            <td><button type="button" class="btn btn-outline-secondary btn-round  assignBank" data-staff_id="{{$e->id}}"><i class="fa fa-eye"></i> Assign Bank </button></td>
 
-                                
-                                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
-                                        
-                                        @foreach(explode(',',$staff->permissions) as $p)  
-                                            <a class="dropdown-item" href="#">{{$p}}</a>
-                                         @endforeach
-                                        
-                                    </div>
-                            
-                            </td>
-
-                            <td><button type="button" class="btn btn-outline-secondary btn-round  viewIncentives" data-values="{{$staff->incentives}}" data-staff_id="{{$staff->id}}"><i class="fa fa-eye"></i> View </button></td>
-                                
-                            <td><button type="button" class="btn btn-outline-secondary btn-round  viewTargets" data-values="{{$staff->targets}}" data-service="{{$staff->services}}" data-staff_id="{{$staff->id}}"><i class="fa fa-eye"></i> View</button></td>
-
-                            <td><button type="button" class="btn btn-outline-dark btn-round viewdetails" data-values="{{$staff}}" data-staff_id="{{$staff->id}}">More</button></td>
-                
-                            
-                            
+                            <td><button type="button" class="btn btn-outline-dark btn-round viewdetails" data-values="{{$e}}" data-staff_id="{{$e->id}}">User Profile</button></td>
+                                    
                         </tr>
                         @endforeach
                     </tbody>
@@ -120,11 +107,12 @@
     </div>
 </div>
 
-<div class="modal fade show" id="incentivesModal" tabindex="-1" role="dialog" >
+<div class="modal fade show" id="bankModal" tabindex="-1" role="dialog" >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title mt-0" id="exampleModalLabel">Incentives</h5>
+            <h5 class="modal-title mt-0" id="exampleModalLabel">
+            Assign Bank</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
             </button>
@@ -132,16 +120,18 @@
         <div class="modal-body ">
             <div class="card">                                       
                 <div class="card-body"> 
-                    <h4 class="header-title mt-0 mb-3">Incentives</h4>
-
+                
                     <div class="slimscroll activity-scroll">
                             
-                                
-                        <div class="incentivesList activity" style="max-height: 250px; overflow: auto;"></div>
-                        <h4 class="header-title mt-0 mb-3">Create Incentives</h4>
-                        <form class="needs-validation was-validated" action="{{url('/admin/save_staff_incentive')}}" method="POST">
+                        <form class="needs-validation was-validated" action="{{url('/admin/save_enquiry_bank')}}" method="POST">
                             {{ csrf_field() }}
-                            <div id="form-content" class="incentivesForm">
+                            <div id="form-content" class="enquiryForm">
+                                <select name="propose_bank_id" type="text" class="form-control" required>
+                                    <option Selected Defalt value="0">Select</option>
+                                @foreach($banks as $b)
+                                    <option value="{{$b->id}}">{{$b->name}}</option>
+                                @endforeach
+                            </select>
 
                             </div>
                             <button type="submit" class="btn btn-primary">Save</button>
@@ -160,11 +150,11 @@
 
 
 
-<div class="modal fade show" id="targetsModal" tabindex="-1" role="dialog" >
+<div class="modal fade show" id="loanModal" tabindex="-1" role="dialog" >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title mt-0" id="exampleModalLabel">Business Targets</h5>
+            <h5 class="modal-title mt-0" id="exampleModalLabel">Eligible Loan</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
             </button>
@@ -172,17 +162,19 @@
         <div class="modal-body ">
             <div class="card">                                       
                 <div class="card-body"> 
-                    <h4 class="header-title mt-0 mb-3">Targets</h4>
-
+                    
                     <div class="slimscroll activity-scroll">
                             
                                 
-                        <div class="targetsList activity" style="max-height: 218px; overflow: auto;"></div>
-                        <h4 class="header-title mt-0 mb-3">Create Business Targets</h4>
-                        <form class="needs-validation was-validated" action="{{url('/admin/save_staff_target')}}" method="POST">
+                        <form class="needs-validation was-validated" action="{{url('/admin/save_staff_loan')}}" method="POST">
                             {{ csrf_field() }}
-                            <div id="form-content" class="targetsForm">
-
+                            <div id="form-content">
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Amount</label>
+                                    <div class="col-lg-9">
+                                        <input name="eligible_loan_amount" type="text" class="form-control staffRquiredField" placeholder="Loan Amount" >
+                                    </div>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Save</button>
                         </form>
@@ -231,307 +223,313 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title mt-0" id="exampleModalLabel">Create New Staff</h5>
+            <h5 class="modal-title mt-0" id="exampleModalLabel">Create New Client Enquiry</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
             </button>
         </div>
         <div class="modal-body">
-            <form id="form-horizontal" onsubmit="return staffFormSubmit()" class="form-horizontal form-wizard-wrapper" action="{{route('staffs.store')}}" method="POST" enctype="multipart/form-data">
+            <form  action="{{route('enquiries.store')}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <h3>Personal Details</h3>
-                    <fieldset>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtFirstNameBilling" class="col-lg-3 col-form-label">Name</label>
-                                    <div class="col-lg-9">
-                                        <input id="txtFirstNameBilling" name="name" type="text" class="form-control staffRquiredField" placeholder="Name" >
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtLastNameBilling" class="col-lg-3 col-form-label">Mobile No.</label>
-                                    <div class="col-lg-9">
-                                        <input id="txtLastNameBilling" name="mobile_number" type="" class="form-control staffRquiredField" placeholder="Mobile Number" >
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtCompanyBilling" class="col-lg-3 col-form-label">Email</label>
-                                    <div class="col-lg-9">
-                                        <input id="txtCompanyBilling" name="email" type="email" class="form-control staffRquiredField" placeholder="Email" >
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtEmailAddressBilling" class="col-lg-3 col-form-label">Date of Birth</label>
-                                    <div class="col-lg-9">
-                                        <input id="txtEmailAddressBilling" name="dob" type="date" class="form-control staffRquiredField" placeholder="DOB" >
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtAddress1Billing" class="col-lg-3 col-form-label">Permanent Address</label>
-                                    <div class="col-lg-9">
-                                        <textarea id="txtAddress1Billing" name="address" rows="4" class="form-control"></textarea>
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtAddress2Billing" class="col-lg-3 col-form-label">Current Address</label>
-                                    <div class="col-lg-9">
-                                        <textarea id="txtAddress2Billing" name="current_address" rows="4" class="form-control"></textarea>
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtCityBilling" class="col-lg-3 col-form-label">Emergency Contact</label>
-                                    <div class="col-lg-9">
-                                        <input id="txtCityBilling" name="emergency_contact" type="number" class="form-control" placeholder="Emergency Contact">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtStateProvinceBilling" class="col-lg-3 col-form-label">Blood Group</label>
-                                    <div class="col-lg-9">
-                                        <input id="txtStateProvinceBilling" name="blood_group" type="text" class="form-control" placeholder="Blood Group">
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Password</label>
-                                    <div class="col-lg-9">
-                                        <input name="password" type="password" class="form-control staffRquiredField" placeholder="password" >
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtFaxBilling" class="col-lg-3 col-form-label">Location</label>
-                                    <div class="col-lg-9">
-
-                                        <select name="location_id" type="text" class="form-control staffRquiredField" placeholder="Location" >
-                                            <option Selected Defalt value="0">Select</option>
-                                            @foreach($locations as $l)
-                                            <option value="{{$l->id}}">{{$l->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Qualification</label>
-                                    <div class="col-lg-9">
-                                        <input name="qualification" type="text" class="form-control" placeholder="Qualification">
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtFaxBilling" class="col-lg-3 col-form-label">Marital Status</label>
-                                    <div class="col-lg-9">
-
-                                        <select  name="marital_status" type="text" class="form-control staffRquiredField"  >
-                                            <option Selected Defalt value="M">Select</option>
-                                            <option value="S">Single</option>
-                                            <option value="M">Maried</option>
-                                        </select>
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Family Members</label>
-                                    <div class="col-lg-9">
-                                        <input name="family_members" type="number" class="form-control" placeholder="No. of family members">
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtFaxBilling" class="col-lg-3 col-form-label">Anniversary</label>
-                                    <div class="col-lg-9">
-                                        <input name="anniversary" type="date" class="form-control" placeholder="Anniversary" >
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div>
-                    </fieldset><!--end fieldset-->
-
-                    <h3>Document</h3>
-                    <fieldset>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row ">
-                                    <label for="txtCompanyShipping" class="col-lg-3 col-form-label">PAN Card</label>
-                                    <div class="col-lg-9">
-                                    <input type="file" class="custom-file-input" name="pan[]" multiple>
-                                    <label class="custom-file-label" for="customFile">file</label>
-                                </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row ">
-                                    <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Aadhar Card</label>
-                                    <div class="col-lg-9">
-                                    <input type="file" class="custom-file-input" name="aadhar[]" multiple>
-                                    <label class="custom-file-label" for="customFile">file</label>
-                                </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Date of Joining</label>
-                                    <div class="col-lg-9">
-                                        <input id="txtCompanyShipping" name="doj" type="date" class="form-control staffRquiredField" placeholder="DOJ" >
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Resume</label>
-                                    <div class="col-lg-9">
-                                    <input type="file" class="custom-file-input"  name="resume">
-                                    
-                                    <label class="custom-file-label" for="customFile">file</label>
-                                </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row ">
-                                    <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Experience Certificates</label>
-                                    <div class="col-lg-9">
-                                    <input type="file" class="custom-file-input" name="exp_cert[]" multiple>
-                                    <label class="custom-file-label" for="customFile">file</label>
-                                </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row ">
-                                    <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Qualification Certificates</label>
-                                    <div class="col-lg-9">
-                                    <input type="file" class="custom-file-input" name="qual_cert[]" multiple>
-                                    <label class="custom-file-label" for="customFile">file</label>
-                                </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </fieldset><!--end fieldset-->
-
-                    <h3>Company Profile</h3>
-                    <fieldset>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtNameCard" class="col-lg-3 col-form-label">Designation</label>
-                                    <div class="col-lg-9">
-
-                                        <select name="designation_id" type="text" class="form-control staffRquiredField" placeholder="Designation" required>
-                                            <option Selected Defalt value="0">Select</option>
-                                            @foreach($designations as $d)
-                                            <option value="{{$d->id}}">{{$d->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="ddlCreditCardType" class="col-lg-3 col-form-label">Report To</label>
-                                    <div class="col-lg-9">
-
-                                        <select name="report_to_id" type="text" class="form-control staffRquiredField" placeholder="Report To Staff" required>
-                                            <option Selected Defalt value="0">Select</option>
-                                            @foreach($all_staffs as $l)
-                                            <option value="{{$l->id}}">{{$l->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="txtCreditCardNumber" class="col-lg-3 col-form-label">Permissions</label>
-                                    <div class="col-lg-9">
-                                        <select name="permissions[]" type="text" class="select2 staffRquiredField mb-3 select2-multiple select2-hidden-accessible" multiple >
-                                            
-                                            <option value="staffs">Staff</option>
-                                            <option value="services">Service</option>
-                                            <option value="clients">Client</option>
-                                            
-                                        </select>
-                                    </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="ddlCreditCardType" class="col-lg-3 col-form-label">Services</label>
-                                    <div class="col-lg-9">
-
-                                        <select name="service_id[]" type="text" class="select2 staffRquiredField mb-3 select2-multiple select2-hidden-accessible" multiple >
-                                            
-                                            @foreach($services as $l)
-                                            <option value="{{$l->id}}">{{$l->service_type}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div><!--end form-group-->
-                            </div>
-                            
-                        </div><!--end row-->
-                        
-                    </fieldset><!--end fieldset-->
-
-                    <h3>Confirm Detail</h3>
-                    <fieldset>
-                        <div class="p-3">
-                            <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Please Click on Submit to Create Staff</span>
-                            </label>
-
-                            <div class="p-3" id="staffFormError"></div>
-
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                        
-                    </fieldset><!--end fieldset-->
                     
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtFirstNameBilling" class="col-lg-3 col-form-label">Name</label>
+                            <div class="col-lg-9">
+
+                                <select name="user_id" type="text" class="form-control">
+                                    <option Selected Defalt value="0">Select</option>
+                                    @foreach($users as $l)
+                                    <option value="{{$l->id}}">{{$l->first_name}} {{$l->last_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtLastNameBilling" class="col-lg-3 col-form-label">Choose Service</label>
+                            <div class="col-lg-9">
+
+                                <select name="service_id" type="text" class="form-control">
+                                    <option Selected Defalt value="0">Select</option>
+                                    @foreach($services as $l)
+                                    <option value="{{$l->id}}">{{$l->service-type}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtCompanyBilling" class="col-lg-3 col-form-label">Employment_type</label>
+                            <div class="col-lg-9">
+
+                                <select name="location_id" type="text" class="form-control">
+                                    <option Selected Defalt value="0">Select</option>
+                                    
+                                    <option value="Salary">Self Employed</option>
+                                    <option value="Business">Business</option>
+                                    
+                                </select>
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtEmailAddressBilling" class="col-lg-3 col-form-label">Income/Month</label>
+                            <div class="col-lg-9">
+                                <input id="txtEmailAddressBilling" name="dob" type="date" class="form-control staffRquiredField" placeholder="DOB" >
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtAddress1Billing" class="col-lg-3 col-form-label">Permanent Address</label>
+                            <div class="col-lg-9">
+                                <textarea id="txtAddress1Billing" name="address" rows="4" class="form-control"></textarea>
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtAddress2Billing" class="col-lg-3 col-form-label">Current Address</label>
+                            <div class="col-lg-9">
+                                <textarea id="txtAddress2Billing" name="current_address" rows="4" class="form-control"></textarea>
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtCityBilling" class="col-lg-3 col-form-label">Emergency Contact</label>
+                            <div class="col-lg-9">
+                                <input id="txtCityBilling" name="emergency_contact" type="number" class="form-control" placeholder="Emergency Contact">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtStateProvinceBilling" class="col-lg-3 col-form-label">Blood Group</label>
+                            <div class="col-lg-9">
+                                <input id="txtStateProvinceBilling" name="blood_group" type="text" class="form-control" placeholder="Blood Group">
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div><!--end row-->
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Password</label>
+                            <div class="col-lg-9">
+                                <input name="password" type="password" class="form-control staffRquiredField" placeholder="password" >
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtFaxBilling" class="col-lg-3 col-form-label">Location</label>
+                            <div class="col-lg-9">
+
+                                <select name="location_id" type="text" class="form-control staffRquiredField" placeholder="Location" >
+                                    <option Selected Defalt value="0">Select</option>
+                                    @foreach($locations as $l)
+                                    <option value="{{$l->id}}">{{$l->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Qualification</label>
+                            <div class="col-lg-9">
+                                <input name="qualification" type="text" class="form-control" placeholder="Qualification">
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtFaxBilling" class="col-lg-3 col-form-label">Marital Status</label>
+                            <div class="col-lg-9">
+
+                                <select  name="marital_status" type="text" class="form-control staffRquiredField"  >
+                                    <option Selected Defalt value="M">Select</option>
+                                    <option value="S">Single</option>
+                                    <option value="M">Maried</option>
+                                </select>
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div><!--end row-->
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Family Members</label>
+                            <div class="col-lg-9">
+                                <input name="family_members" type="number" class="form-control" placeholder="No. of family members">
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtFaxBilling" class="col-lg-3 col-form-label">Anniversary</label>
+                            <div class="col-lg-9">
+                                <input name="anniversary" type="date" class="form-control" placeholder="Anniversary" >
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div>
+            
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row ">
+                            <label for="txtCompanyShipping" class="col-lg-3 col-form-label">PAN Card</label>
+                            <div class="col-lg-9">
+                            <input type="file" class="custom-file-input" name="pan[]" multiple>
+                            <label class="custom-file-label" for="customFile">file</label>
+                        </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row ">
+                            <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Aadhar Card</label>
+                            <div class="col-lg-9">
+                            <input type="file" class="custom-file-input" name="aadhar[]" multiple>
+                            <label class="custom-file-label" for="customFile">file</label>
+                        </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Date of Joining</label>
+                            <div class="col-lg-9">
+                                <input id="txtCompanyShipping" name="doj" type="date" class="form-control staffRquiredField" placeholder="DOJ" >
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Resume</label>
+                            <div class="col-lg-9">
+                            <input type="file" class="custom-file-input"  name="resume">
+                            
+                            <label class="custom-file-label" for="customFile">file</label>
+                        </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row ">
+                            <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Experience Certificates</label>
+                            <div class="col-lg-9">
+                            <input type="file" class="custom-file-input" name="exp_cert[]" multiple>
+                            <label class="custom-file-label" for="customFile">file</label>
+                        </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row ">
+                            <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Qualification Certificates</label>
+                            <div class="col-lg-9">
+                            <input type="file" class="custom-file-input" name="qual_cert[]" multiple>
+                            <label class="custom-file-label" for="customFile">file</label>
+                        </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div><!--end row-->
+           
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtNameCard" class="col-lg-3 col-form-label">Designation</label>
+                            <div class="col-lg-9">
+
+                                <select name="designation_id" type="text" class="form-control staffRquiredField" placeholder="Designation" required>
+                                    <option Selected Defalt value="0">Select</option>
+                                    @foreach($designations as $d)
+                                    <option value="{{$d->id}}">{{$d->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="ddlCreditCardType" class="col-lg-3 col-form-label">Report To</label>
+                            <div class="col-lg-9">
+
+                                <select name="report_to_id" type="text" class="form-control staffRquiredField" placeholder="Report To Staff" required>
+                                    <option Selected Defalt value="0">Select</option>
+                                    @foreach($all_staffs as $l)
+                                    <option value="{{$l->id}}">{{$l->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="txtCreditCardNumber" class="col-lg-3 col-form-label">Permissions</label>
+                            <div class="col-lg-9">
+                                <select name="permissions[]" type="text" class="select2 staffRquiredField mb-3 select2-multiple select2-hidden-accessible" multiple >
+                                    
+                                    <option value="staffs">Staff</option>
+                                    <option value="services">Service</option>
+                                    <option value="clients">Client</option>
+                                    
+                                </select>
+                            </div>
+                        </div><!--end form-group-->
+                    </div><!--end col-->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="ddlCreditCardType" class="col-lg-3 col-form-label">Services</label>
+                            <div class="col-lg-9">
+
+                                <select name="service_id[]" type="text" class="select2 staffRquiredField mb-3 select2-multiple select2-hidden-accessible" multiple >
+                                    
+                                    @foreach($services as $l)
+                                    <option value="{{$l->id}}">{{$l->service_type}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div><!--end form-group-->
+                    </div>
+                    
+                </div><!--end row-->
+                
+                <div class="p-3">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Please Click on Submit to Create Staff</span>
+                    </label>
+
+                    <div class="p-3" id="staffFormError"></div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                   
             </form>
         </div>
         <div class="modal-footer">
@@ -1090,7 +1088,7 @@
                                 <div class="form-group row">
                                     <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Password</label>
                                     <div class="col-lg-9">
-                                        <input name="password" type="password" class="form-control" placeholder="password">
+                                        <input name="password" type="password" class="form-control staffRquiredField1" placeholder="password" value="${staff.password}">
                                     </div>
                                 </div><!--end form-group-->
                             </div><!--end col-->

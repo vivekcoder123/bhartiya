@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Models\Staff;
 use App\Models\Service;
 use App\Models\Location;
+use App\Models\Bank;
+use App\Models\User;
 use App\Models\Designation;
-use App\Models\BusinessTarget;
-use App\Models\StaffBusinessTarget;
-use App\Models\StaffBusiness;
-use App\Models\StaffIncentive;
+use App\Models\Enquiry;
+use App\Models\EnquiryActivityTracker;
+use App\Models\EnquiryStatusTracking;
+use App\Models\ExistingLoanDetail;
 use App\Models\StaffService;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -18,8 +21,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
-class StaffController extends Controller
-{                                                          
+class EnquiryController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
@@ -29,13 +32,12 @@ class StaffController extends Controller
     {
         try{
             $services = Service::where('status','1')->orderBy('service_type')->get(['id','service_type']);
-            $all_staffs = Staff::orderBy('name')->get(['id','name']);
-            $targets = BusinessTarget::orderBy('name')->get(['id','name']);
+            $staffs = Staff::orderBy('name')->get(['id','name']);
+            $users = User::where('status','1')->orderBy('name')->get(['id','name']);
+            $banks = Bank::where('status','1')->orderBy('name')->get(['id','name']);
             $locations = Location::where('status','1')->orderBy('name')->get();
             $designations = Designation::where('status','1')->orderBy('name')->get();
-            $staffs = Staff::with(['designation:id,name','location:id,name','incentives:id,incentive,remarks,staff_id,created_at','services:id,service_type','reportTo:id,name','targets'=>function($tQery){
-                $tQery->with('service','business_target');
-            }])->orderBy('name')->get();
+            $enquiries = Enquiry::with(['designation:id,name','location:id,name','incentives:id,incentive,remarks,staff_id,created_at','services:id,service_type','reportTo:id,name')->orderBy('name')->get();
             return view('admin.enquiries.index',compact('staffs','locations','designations','services','targets','all_staffs'));
         }catch(Exception $e){
             return redirect()->back()->with('error',$e->getMessage().",line:".$e->getLine());

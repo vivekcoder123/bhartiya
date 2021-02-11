@@ -15,6 +15,8 @@
         <!-- jvectormap -->
         <link href="{{asset('plugins/jvectormap/jquery-jvectormap-2.0.2.css')}}" rel="stylesheet" type="text/css" />
 
+        <!--Form Wizard-->
+        <link rel="stylesheet" href="{{asset('plugins/jquery-steps/jquery.steps.css')}}">
 
         <!-- DataTables -->
         <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
@@ -134,6 +136,10 @@
         <script src="{{asset('plugins/select2/select2.min.js')}}"></script>
         <script src="{{asset('plugins/ion-rangeslider/ion.rangeSlider.min.js')}}"></script>
         <script src="{{asset('assets/pages/jquery.rangeslider.init.js')}}"></script>
+
+
+        <script src="{{asset('plugins/jquery-steps/jquery.steps.min.js')}}"></script>
+        <script src="{{asset('assets/pages/jquery.form-wizard.init.js')}}"></script>
 
         <!-- App js -->
         <!-- Required datatable js -->

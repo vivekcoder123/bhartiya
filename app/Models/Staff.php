@@ -35,7 +35,7 @@ class Staff extends Model
     }
 
     public function targets(){
-    	return $this->belongsToMany('App\Models\BusinessTarget','staff_business_targets','staff_id','business_target_id');
+    	return $this->hasMany('App\Models\StaffBusinessTarget','staff_id','id');
     }
 
 }

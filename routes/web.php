@@ -8,6 +8,7 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\EnquiryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,9 +46,19 @@ Route::group(['middleware' => 'auth'], function () {
 
 		/******************Start User*******************/
 
+		Route::put('users/update/{id}',[UserController::class,'updateUser']);
+        Route::post('/users/change-status',[UserController::class,'changeStatus']);
+		Route::post('/users/getDeleteSelectedImages', [UserController::class,'getDeleteSelectedImages']);
 		Route::resource('/users', UserController::class);
 
 		/********************End User********************/
+
+
+		/******************Start Enquery*******************/
+
+		Route::resource('/enquiries', EnqueryController::class);
+
+		/********************End Enquery********************/
 
 
 		/******************Start Bank*******************/
@@ -72,7 +83,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 		/******************Start Staff*******************/
 
-		Route::post('/save_staff_incentive',[StaffController::class,'save_staff_intensive']);
+
+		Route::post('/staffs/getDeleteSelectedImages', [StaffController::class,'getDeleteSelectedImages']);
+		Route::post('/save_staff_incentive',[StaffController::class,'save_staff_incentive']);
+		Route::post('/save_staff_target',[StaffController::class,'save_staff_target']);
+		Route::put('staffs/update/{id}',[StaffController::class,'updateStaff']);
+		//Route::post('/staffs/{id}', [StaffController::class,'destroy']);
 		Route::resource('/staffs', StaffController::class);
 
 		/********************End Staff********************/
@@ -80,6 +96,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 		/******************Start Designation*******************/
 
+		Route::post('/designations/change-status',[DesignationController::class,'changeStatus']);
 		Route::resource('/designations', DesignationController::class);
 		Route::get('/get-designations', [DesignationController::class,'getdesignations'])->name('get-designations');
 
@@ -88,6 +105,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 		/******************Start Location*******************/
 
+		Route::post('/locations/change-status',[LocationController::class,'changeStatus']);
 		Route::resource('/locations', LocationController::class);
 		Route::get('/get-locations', [LocationController::class,'getlocations'])->name('get-locations');
 

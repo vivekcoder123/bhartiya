@@ -283,6 +283,7 @@
             });
         });
 
+//change Bank status
         $(document).on("click","#getUpdateId",function(){
             id = $(this).data('id');
             

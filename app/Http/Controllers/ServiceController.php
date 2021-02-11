@@ -23,7 +23,7 @@ class ServiceController extends Controller
     public function index()
     {
         try{
-            $banks = Bank::orderBy('name')->get(['id','name']);
+            $banks = Bank::where('status','1')->orderBy('name')->get(['id','name']);
             $attributes = ServiceFormAttribute::get(['id','name']);
             $services = Service::with('banks:id,name','fields:id,name,show_name')->select('id','service_type','min_tenure','max_tenure','status')->get()
             ->map(function($service) use($attributes){

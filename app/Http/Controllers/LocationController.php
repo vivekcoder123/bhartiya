@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Location;
+use Exception;
 
 class LocationController extends Controller
 {
@@ -21,9 +22,11 @@ class LocationController extends Controller
     {
         $data = $location->getData();
         return \DataTables::of($data)
-            ->addColumn('Actions', function($data) {
+            ->addColumn('status', function($data) {
+                return $data->status=='1'?'Active':'Not Active';
+            })->addColumn('Actions', function($data) {
                 return '<button type="button" class="btn btn-success btn-sm" id="getEditLocationData" data-id="'.$data->id.'"><i class="fa fa-edit"> Edit</i></button>
-                    <button type="button" data-id="'.$data->id.'" data-toggle="modal" data-target="#DeleteLocationModal" class="btn btn-danger btn-sm" id="getDeleteId"><i class="ti-trash"> Delete</i></button>';
+                    <button type="button" class="btn btn-warning btn-sm " id="getUpdateId" data-id="'.$data->id.'"><i class="ti-loop"> Change Status</i></button>';
             })
             ->rawColumns(['Actions'])
             ->make(true);
@@ -121,11 +124,33 @@ class LocationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $location = new Location;
-        $location->deleteData($id);
+    // public function destroy($id)
+    // {
+    //     $location = new Location;
+    //     $location->deleteData($id);
 
-        return response()->json(['success'=>'Location deleted successfully']);
+    //     return response()->json(['success'=>'Location deleted successfully']);
+    // }
+
+    public function changeStatus(Request $request)
+    {
+        
+      try{
+            $id = $request->id;
+
+         if(!Location::where('id', $request->id)->exists()){
+            throw new Exception("Location not found!");
+         }
+         $location = Location::where('id', $request->id)->first();
+         $location->status = $location->status=='1'?'0':'1';
+         $location->save();
+         return $location->status;
+        }catch(Exception $e){
+            
+            return $e->getMessage();
+            
+        }
+
+       
     }
 }
