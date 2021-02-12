@@ -31,7 +31,9 @@ class EnquiryController extends Controller
     public function index()
     {
         try{
-            $services = Service::where('status','1')->orderBy('service_type')->get(['id','service_type']);
+            $services = Service::where('status','1')->with('banks:id,name','fields.attribute_type')->orderBy('service_type')->get(['id','service_type']);
+            return $services;
+            //$request->allFiles();
             $staffs = Staff::orderBy('name')->get(['id','name']);
             $users = User::where('status','1')->orderBy('name')->get(['id','name']);
             $banks = Bank::where('status','1')->orderBy('name')->get(['id','name']);
@@ -42,6 +44,7 @@ class EnquiryController extends Controller
         }catch(Exception $e){
             return redirect()->back()->with('error',$e->getMessage().",line:".$e->getLine());
         }
+
     }
 
     /**

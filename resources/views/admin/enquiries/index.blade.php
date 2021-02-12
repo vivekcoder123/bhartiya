@@ -1,6 +1,10 @@
+
+
 @extends('layouts.admin')
 
 @section('css')
+
+<link href="{{asset('plugins/ion-rangeslider/ion.rangeSlider.css')}}" rel="stylesheet" type="text/css"/>
 <style type="text/css">
 
   .cart-total {
@@ -56,6 +60,9 @@
                             <th>Eligible Loan Amount</th>
                             <th>Time</th>
                             <th>Tenure</th>
+                            <th>Status</th>
+                            <th>Activity</th>
+                            <th>Existing Loans</th>
                             <th>Applied Bank</th>
                             <th>Assigned Bank</th>
                             <th>User Details</th>
@@ -262,6 +269,21 @@
                         </div><!--end form-group-->
                     </div><!--end col-->
                 </div><!--end row-->
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label for="txtCityBilling" class="col-lg-3 col-form-label">Tenure</label>
+                            <div class="col-lg-9">
+                                
+                                    <label for="validationCustom01">Tenure</label>
+                                    <input type="text" class="js-range-slider" name="tenure_range" required="" id="tenure_range" from="${service.data.min_tenure}" to="${service.data.max_tenure}" />
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div><!--end row-->
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
@@ -280,57 +302,47 @@
                     </div><!--end col-->
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label for="txtEmailAddressBilling" class="col-lg-3 col-form-label">Income/Month</label>
+                            <label for="txtEmailAddressBilling" class="col-lg-3 col-form-label">Monthly Income</label>
                             <div class="col-lg-9">
-                                <input id="txtEmailAddressBilling" name="dob" type="date" class="form-control staffRquiredField" placeholder="DOB" >
+                                <input id="txtEmailAddressBilling" name="salary_month" type="number" class="form-control staffRquiredField" placeholder="DOB" >
                             </div>
                         </div><!--end form-group-->
                     </div><!--end col-->
                 </div><!--end row-->
-                <div class="row">
+                
+               <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label for="txtAddress1Billing" class="col-lg-3 col-form-label">Permanent Address</label>
-                            <div class="col-lg-9">
-                                <textarea id="txtAddress1Billing" name="address" rows="4" class="form-control"></textarea>
+                            <label for="txtCompanyBilling" class="col-lg-3 col-form-label">Trading Plateform</label>
+                            
+                                <div class="col-lg-9">
+                                <input id="txtEmailAddressBilling" name="trading_platform" type="text" class="form-control staffRquiredField" placeholder="Trading Plateform" >
+                            
                             </div>
                         </div><!--end form-group-->
                     </div><!--end col-->
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label for="txtAddress2Billing" class="col-lg-3 col-form-label">Current Address</label>
+                            <label for="txtEmailAddressBilling" class="col-lg-3 col-form-label">Monthly Income</label>
                             <div class="col-lg-9">
-                                <textarea id="txtAddress2Billing" name="current_address" rows="4" class="form-control"></textarea>
-                            </div>
-                        </div><!--end form-group-->
-                    </div><!--end col-->
-                </div><!--end row-->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label for="txtCityBilling" class="col-lg-3 col-form-label">Emergency Contact</label>
-                            <div class="col-lg-9">
-                                <input id="txtCityBilling" name="emergency_contact" type="number" class="form-control" placeholder="Emergency Contact">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label for="txtStateProvinceBilling" class="col-lg-3 col-form-label">Blood Group</label>
-                            <div class="col-lg-9">
-                                <input id="txtStateProvinceBilling" name="blood_group" type="text" class="form-control" placeholder="Blood Group">
+                                <input id="txtEmailAddressBilling" name="salary_month" type="number" class="form-control staffRquiredField" placeholder="DOB" >
                             </div>
                         </div><!--end form-group-->
                     </div><!--end col-->
                 </div><!--end row-->
 
-
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Password</label>
+                            <label for="txtFaxBilling" class="col-lg-3 col-form-label">Designation</label>
                             <div class="col-lg-9">
-                                <input name="password" type="password" class="form-control staffRquiredField" placeholder="password" >
+
+                                <select name="designation_id" type="text" class="form-control" placeholder="Location" >
+                                    <option Selected Defalt value="0">Select</option>
+                                    @foreach($designations as $l)
+                                    <option value="{{$l->id}}">{{$l->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div><!--end form-group-->
                     </div><!--end col-->
@@ -353,55 +365,31 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Qualification</label>
-                            <div class="col-lg-9">
-                                <input name="qualification" type="text" class="form-control" placeholder="Qualification">
-                            </div>
-                        </div><!--end form-group-->
-                    </div><!--end col-->
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label for="txtFaxBilling" class="col-lg-3 col-form-label">Marital Status</label>
+                            <label for="txtFaxBilling" class="col-lg-3 col-form-label">Relationship Manager</label>
                             <div class="col-lg-9">
 
-                                <select  name="marital_status" type="text" class="form-control staffRquiredField"  >
-                                    <option Selected Defalt value="M">Select</option>
-                                    <option value="S">Single</option>
-                                    <option value="M">Maried</option>
+                                <select name="relationship_manager_id" type="text" class="form-control" placeholder="Location" >
+                                    <option Selected Defalt value="0">Select</option>
+                                    @foreach($relationship_managers as $l)
+                                    <option value="{{$l->id}}">{{$l->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div><!--end form-group-->
                     </div><!--end col-->
+                    <!--end col-->
                 </div><!--end row-->
 
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label for="txtTelephoneBilling" class="col-lg-3 col-form-label">Family Members</label>
-                            <div class="col-lg-9">
-                                <input name="family_members" type="number" class="form-control" placeholder="No. of family members">
-                            </div>
-                        </div><!--end form-group-->
-                    </div><!--end col-->
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label for="txtFaxBilling" class="col-lg-3 col-form-label">Anniversary</label>
-                            <div class="col-lg-9">
-                                <input name="anniversary" type="date" class="form-control" placeholder="Anniversary" >
-                            </div>
-                        </div><!--end form-group-->
-                    </div><!--end col-->
-                </div>
             
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row ">
                             <label for="txtCompanyShipping" class="col-lg-3 col-form-label">PAN Card</label>
                             <div class="col-lg-9">
-                            <input type="file" class="custom-file-input" name="pan[]" multiple>
-                            <label class="custom-file-label" for="customFile">file</label>
-                        </div>
+                                <input type="file" class="custom-file-input" name="pan[]" multiple>
+                                <label class="custom-file-label" for="customFile">file</label>
+                            </div>
                         </div><!--end form-group-->
                     </div><!--end col-->
                     <div class="col-md-6">
@@ -604,6 +592,8 @@
 
 @section('js')
 
+    
+
     <script>
        
         var services = {!! json_encode($services) !!};
@@ -612,20 +602,18 @@
         var designations = {!! json_encode($designations) !!};
         var locations = {!! json_encode($locations) !!};
 
-        var AllPermissions = [
-            {
-                value:'services',
-                text:'Services'
-            },
-            {
-                value:'staffs',
-                text:'Staffs'
-            },
-            {
-                value:'clients',
-                text:'Clients'
-            }
-        ];
+        
+
+        $("#tenure_range").ionRangeSlider({
+            skin: "big",
+            grid: true,
+            min: 0,
+            max: 100,
+            from: 21,
+            max_postfix: "+",
+            prefix: "Tenure: ",
+            postfix: " years"
+        });
         
         $(document).ready(function(){
             $("a[href$='#finish']").css("display", "none");
@@ -1486,3 +1474,6 @@
 
 
 @endsection
+
+
+

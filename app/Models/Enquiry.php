@@ -31,7 +31,7 @@ class Enquiry extends Model
     public function user(){
         return $this->hasOne('App\Models\User','id','user_id');
     }
-    public function relationship_manager(){
+    public function relationship_managers(){
         return $this->hasOne('App\Models\Staff','id','relationship_manager_id');
     }
     public function bank(){

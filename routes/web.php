@@ -7,8 +7,8 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\BankController;
 use App\Http\Controllers\EnquiryController;
+use App\Http\Controllers\BankController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 		/******************Start Enquery*******************/
 
-		Route::resource('/enquiries', EnqueryController::class);
+		Route::resource('/enquiries', EnquiryController::class);
 
 		/********************End Enquery********************/
 
