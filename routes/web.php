@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 		/******************Start Enquery*******************/
 
+        Route::get('/enquiries/get_dynamic_data',[EnquiryController::class,'get_dynamic_data']);
 		Route::resource('/enquiries', EnquiryController::class);
 
 		/********************End Enquery********************/
