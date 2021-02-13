@@ -36,7 +36,7 @@ class StaffController extends Controller
             $staffs = Staff::with(['designation:id,name','location:id,name','incentives:id,incentive,remarks,staff_id,created_at','services:id,service_type','reportTo:id,name','targets'=>function($tQery){
                 $tQery->with('service','business_target');
             }])->orderBy('name')->get();
-            return view('admin.enquiries.index',compact('staffs','locations','designations','services','targets','all_staffs'));
+            return view('admin.staffs.index',compact('staffs','locations','designations','services','targets','all_staffs'));
         }catch(Exception $e){
             return redirect()->back()->with('error',$e->getMessage().",line:".$e->getLine());
         }
@@ -238,10 +238,11 @@ class StaffController extends Controller
         
         try{
             $image_name = $request->image_name;
-            $user_id = $request->user_id;
-            $user = User::where('id',$user_id)->first();
+            $staff_id = $request->staff_id;
+            $doc = $request->doc_type;
+            $staff = Staff::where('id',$staff_id)->first();
 
-            $images_array = explode(',',$user->pan);
+            $images_array = explode(',',$staff->{$doc});
 
             $pos = array_search($image_name, $images_array);
 
@@ -249,7 +250,7 @@ class StaffController extends Controller
 
             $new_images =implode(',',$images_array);
 
-            User::where('id', $user_id)->update(array('pan' => $new_images));
+            Staff::where('id', $staff_id)->update(array($doc => $new_images));
             unlink(public_path().'/uploads/'.$image_name);
 
             return 'success';

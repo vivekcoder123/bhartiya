@@ -56,7 +56,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 		/******************Start Enquery*******************/
 
+		Route::post('/enquiries/getDeleteSelectedImages', [EnquiryController::class,'getDeleteSelectedImages']);
+		Route::put('enquiries/update/{id}',[EnquiryController::class,'updateEnquiry']);
+		Route::post('/save_enquiry_activity',[EnquiryController::class,'save_enquiry_activity']);
+		Route::post('/save_eligible_loan_amount',[EnquiryController::class,'save_eligible_loan_amount']);
+		Route::post('/change_enquiry_status',[EnquiryController::class,'change_enquiry_status']);
+		Route::post('/asign_propose_bank',[EnquiryController::class,'asign_propose_bank']);
+		Route::post('/save_existing_loan',[EnquiryController::class,'save_existing_loan']);
+		Route::post('/change_propose_bank',[EnquiryController::class,'change_propose_bank']);
         Route::get('/enquiries/get_dynamic_data',[EnquiryController::class,'get_dynamic_data']);
+        Route::get('/enquiries/get_service_tenure_data',[EnquiryController::class,'get_service_tenure_data']);
+        Route::get('/enquiries/get_edit_dynamic_data',[EnquiryController::class,'get_edit_dynamic_data']);
+        Route::get('/enquiries/get_loan_bank_data',[EnquiryController::class,'get_loan_bank_data']);
 		Route::resource('/enquiries', EnquiryController::class);
 
 		/********************End Enquery********************/

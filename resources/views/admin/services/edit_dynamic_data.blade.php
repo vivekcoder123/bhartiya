@@ -12,7 +12,7 @@
                 @endforeach
             </select>
             @else
-            <input type="{{$field->attribute_type->type}}" {{$field->attribute_type->type=='file'?'multiple':''}} class="form-control" name="{{$field->name}}{{$field->attribute_type->type=='file'?'[]':''}}" required>
+            <input type="{{$field->attribute_type->type}}" {{$field->attribute_type->type=='file'?'multiple':'required'}} class="form-control" name="{{$field->name}}{{$field->attribute_type->type=='file'?'[]':''}}">
             @endif
         </div>
     </div>

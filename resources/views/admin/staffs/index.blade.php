@@ -491,7 +491,9 @@
                                             
                                             <option value="staffs">Staff</option>
                                             <option value="services">Service</option>
-                                            <option value="clients">Client</option>
+                                            <option value="enquiries">Client Enquiries</option>
+                                            <option value="users">Users</option>
+                                            
                                             
                                         </select>
                                     </div>
@@ -1396,8 +1398,12 @@
                                 <div class="form-group row">
                                     <label for="txtCreditCardNumber" class="col-lg-3 col-form-label">Permissions</label>
                                     <div class="col-lg-9">
-                                        <select name="permissions[]" id="updatePermissions" type="text" class="select2 staffRquiredField1 mb-3" multiple >
-                                            
+                                        <select name="permissions[]" id="updatePermissions" type="text" class=" select2 staffRquiredField1 mb-3" multiple >
+
+                                        <option value="services" ${staffPermissions.includes('services')?'selected':''}>Services</option>
+                                        <option value="staffs" ${staffPermissions.includes('staffs')?'selected':''}>Staffss</option>
+                                        <option value="users" ${staffPermissions.includes('users')?'selected':''}>Users</option>
+                                        <option value="enquiries" ${staffPermissions.includes('enquiries')?'selected':''}>Clients Enquiries</option>
                                             
                                             
                                             
@@ -1445,8 +1451,6 @@
                 </form>`;
           
             $("#EditStaffModal .modal-body #EditStaffModalBody").html(html);
-            $(".select2").select2();
-            $(".select2").select2();
 
             $("#form-horizontal1").steps({
                 headerTag: "h3",
@@ -1455,6 +1459,7 @@
             });
             
             $("#EditStaffModal").modal("show");
+            $(".select2").select2();
         });
     
        
