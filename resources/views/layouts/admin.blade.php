@@ -72,6 +72,9 @@
       .btn{
           cursor: pointer;
       }
+      .logo-sm{
+        height:80px !important;
+      }
     </style>
 @yield('css')
 <body>

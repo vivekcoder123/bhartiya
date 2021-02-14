@@ -2,6 +2,8 @@
 <!-- Left Sidenav -->
         <div class="left-sidenav">
             <ul class="metismenu left-sidenav-menu">
+
+                @if(Auth::user()->email == 'admin@gmail.com' || in_array("Services",explode(",",Auth::user()->permissions)))
                 <li>
                     <a href="javascript: void(0);"><i class="ti-bar-chart"></i><span>Services</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level in mm-show" aria-expanded="false">
@@ -10,7 +12,9 @@
 
                     </ul>
                 </li>
+                @endif
 
+                @if(Auth::user()->email == 'admin@gmail.com' || in_array("Staffs",explode(",",Auth::user()->permissions)))
                 <li>
                     <a href="javascript: void(0);"><i class="ti-user"></i><span>Staffs</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level in mm-show" aria-expanded="false">
@@ -20,7 +24,9 @@
 
                     </ul>
                 </li>
+                @endif
 
+                @if(Auth::user()->email == 'admin@gmail.com' || in_array("Users",explode(",",Auth::user()->permissions)))
                 <li>
                     <a href="javascript: void(0);"><i class="dripicons-user-group"></i><span>Users</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level in mm-show" aria-expanded="false">
@@ -28,7 +34,9 @@
 
                     </ul>
                 </li>
+                @endif
 
+                @if(Auth::user()->email == 'admin@gmail.com' || in_array("Clients",explode(",",Auth::user()->permissions)))
                 <li>
                     <a href="javascript: void(0);"><i class=" dripicons-user-id"></i><span>Clients</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level in mm-show" aria-expanded="false">
@@ -36,6 +44,7 @@
 
                     </ul>
                 </li>
+                @endif
 
             </ul>
         </div>
