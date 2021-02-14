@@ -9,10 +9,9 @@ class Enquiry extends Model
 {
     use HasFactory;
     protected $table = 'enquiries';
-    protected $guarded = ["id"];
+    protected $guarded = "id";
 
     const ENQUIRY_SUBMITTED = 0;
-    const ENQUIRY_SUBMITTED_NAME=1;
     const CUSTOMER_CONTACTED = 2;
     const DOCUMENTS_UPLOAD_PENDING = 3;
     const APPLICATION_SENT_FOR_SIGNATURE = 4;
@@ -28,21 +27,35 @@ class Enquiry extends Model
     const SALARY = "Salary";
     const BUSINESS = "Business";
     const STATUSES_ARRAY = [
-        ['ENQUIRY SUBMITTED'=>self::ENQUIRY_SUBMITTED],
-        ['ENQUIRY SUBMITTED NAME'=>self::ENQUIRY_SUBMITTED_NAME],
-        ['CUSTOMER CONTACTED'=>self::CUSTOMER_CONTACTED],
-        ['DOCUMENTS UPLOAD PENDING'=>self::DOCUMENTS_UPLOAD_PENDING],
-        ['APPLICATION SENT FOR SIGNATURE'=>self::APPLICATION_SENT_FOR_SIGNATURE],
-        ['SENT BACK BY BANK'=>self::SENT_BACK_BY_BANK],
-        ['LOGIN ACCEPTED BY BANK'=>self::LOGIN_ACCEPTED_BY_BANK],
-        ['ADDITIONAL DOCUMENT REQUIRED'=>self::ADDITIONAL_DOCUMENT_REQUIRED],
-        ['APPROVAL PENDING'=>self::APPROVAL_PENDING],
-        ['APPROVED'=>self::APPROVED],
-        ['PENDING FOR DISBURSEMENT'=>self::PENDING_FOR_DISBURSEMENT],
-        ['LOAN DISBURSED'=>self::LOAN_DISBURSED],
-        ['REJECTED'=>self::REJECTED],
-        ['REJECTED RELOOK'=>self::REJECTED_RELOOK]
+        'ENQUIRY SUBMITTED'=>self::ENQUIRY_SUBMITTED,
+        'CUSTOMER CONTACTED'=>self::CUSTOMER_CONTACTED,
+        'DOCUMENTS UPLOAD PENDING'=>self::DOCUMENTS_UPLOAD_PENDING,
+        'APPLICATION SENT FOR SIGNATURE'=>self::APPLICATION_SENT_FOR_SIGNATURE,
+        'SENT BACK BY BANK'=>self::SENT_BACK_BY_BANK,
+        'LOGIN ACCEPTED BY BANK'=>self::LOGIN_ACCEPTED_BY_BANK,
+        'ADDITIONAL DOCUMENT REQUIRED'=>self::ADDITIONAL_DOCUMENT_REQUIRED,
+        'APPROVAL PENDING'=>self::APPROVAL_PENDING,
+        'APPROVED'=>self::APPROVED,
+        'PENDING FOR DISBURSEMENT'=>self::PENDING_FOR_DISBURSEMENT,
+        'LOAN DISBURSED'=>self::LOAN_DISBURSED,
+        'REJECTED'=>self::REJECTED,
+        'REJECTED RELOOK'=>self::REJECTED_RELOOK
     ];
+    const STATUS_NAME_QUERY = "(CASE WHEN status=0 THEN 'ENQUIRY SUBMITTED'
+    WHEN status=2 THEN 'CUSTOMER CONTACTED'
+    WHEN status=3 THEN 'DOCUMENTS UPLOAD PENDING'
+    WHEN status=4 THEN 'APPLICATION SENT FOR SIGNATURE'
+    WHEN status=5 THEN 'SENT BACK BY BANK'
+    WHEN status=6 THEN 'LOGIN ACCEPTED BY BANK'
+    WHEN status=7 THEN 'ADDITIONAL DOCUMENT REQUIRED'
+    WHEN status=8 THEN 'APPROVAL PENDING'
+    WHEN status=1 THEN 'APPROVED'
+    WHEN status=11 THEN 'PENDING FOR DISBURSEMENT'
+    WHEN status=100 THEN 'LOAN DISBURSED'
+    WHEN status=21 THEN 'REJECTED'
+    WHEN status=22 THEN 'REJECTED RELOOK'
+    ELSE NULL END
+    ) as status_name";
 
     public function service(){
         return $this->hasOne('App\Models\Service','id','service_id');
@@ -59,7 +72,7 @@ class Enquiry extends Model
     public function propose_bank(){
         return $this->hasOne('App\Models\Bank','id','propose_bank_id');
     }
-    
+
     public function location(){
         return $this->hasOne('App\Models\Location','id','location_id');
     }

@@ -63,6 +63,15 @@
           height: 0;
           overflow-y: hidden;
       }
+      .container{
+          max-width:960px !important;
+      }
+      .modal-dialog{
+          max-width:70%;
+      }
+      .btn{
+          cursor: pointer;
+      }
     </style>
 @yield('css')
 <body>

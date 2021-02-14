@@ -36,7 +36,10 @@ class EnquiryController extends Controller
             $staffs = Staff::get();
             $users = User::where('status','1')->get();
             $locations = Location::where('status','1')->get();
-            $enquiries = Enquiry::with('location:id,name','user','bank:id,name','propose_bank:id,name','service:id,service_type','relationship_manager:id,name','enquiry_status','enquiry_activiy','existing_loan')->get();
+            $status_name_query = Enquiry::STATUS_NAME_QUERY;
+            $enquiries = Enquiry::with(['location:id,name','user','bank:id,name','propose_bank:id,name','service:id,service_type','relationship_manager:id,name','enquiry_status'=>function($query) use($status_name_query){
+                $query->selectRaw("id,enquiry_id,created_at,$status_name_query");
+            },'enquiry_activiy','existing_loan'])->selectRaw("*,$status_name_query")->get();
             $statuses = Enquiry::STATUSES_ARRAY;
             return view('admin.enquiries.index',compact('staffs','locations','services','users','enquiries','statuses'));
         }catch(Exception $e){
@@ -88,10 +91,14 @@ class EnquiryController extends Controller
                 $input[$f] =implode(',',$data);
             }
 
-            $enquiry=Enquiry::create($input);
+            $current_time = date("Y-m-d H:i:s");
+            unset($input['_token']);
+            $input['created_at'] = $current_time;
+            $input['updated_at'] = $current_time;
+            $enquiry_id=Enquiry::insertGetId($input);
 
                 $enquiry_tracking_data[] = [
-                    'enquiry_id'=>$enquiry->id,
+                    'enquiry_id'=>$enquiry_id,
                     'status'=>0,
                     'created_at'=>$current_time,
                     'updated_at'=>$current_time
@@ -105,7 +112,7 @@ class EnquiryController extends Controller
 
         }catch(\Exception $e){
             DB::rollback();
-            return Redirect::back()->with('error',$e->getMessage());
+            return Redirect::back()->with('error',$e->getMessage().",line:".$e->getLine());
         }
     }
 
@@ -169,7 +176,7 @@ class EnquiryController extends Controller
 
             $fields = ['aadhar','pan','address_proof','payslip','return_statement','bank_statement','others'];
 
-           
+
             $pre_enquiry = Enquiry::where('id',$id)->first();
 
             foreach ($fields as $f) {
@@ -192,7 +199,7 @@ class EnquiryController extends Controller
 
             $updated_enquiry=Enquiry::where('id',$id)->update($input);
 
-            
+
             DB::commit();
             return redirect()->back()
                 ->with('success', 'Enquiry updated successfully.');
@@ -214,7 +221,7 @@ class EnquiryController extends Controller
     }
 
     public function get_service_tenure_data(Request $request){
-        
+
         $service = Service::where('service_type',$request->service_id)->first();
         if($service){
             return $service;
@@ -226,14 +233,15 @@ class EnquiryController extends Controller
 
     public function get_edit_dynamic_data(Request $request){
         $service = Service::with('banks:id,name','fields.attribute_type')->find($request->service_id);
-        if($service){
-            $view = view('admin.services.edit_dynamic_data',compact('service'));
+        $enquiry = Enquiry::find($request->enquiry_id);
+        if($service && $enquiry){
+            $view = view('admin.services.edit_dynamic_data',compact('service','enquiry'));
             return $view->render();
         }else{
             return '';
         }
     }
-    
+
     public function get_loan_bank_data(Request $request){
         $service = Service::with('banks:id,name')->find($request->service_id);
         if($service){
@@ -254,7 +262,7 @@ class EnquiryController extends Controller
                     'created_at'=>$current_time,
                     'updated_at'=>$current_time
                 ];
-           
+
             EnquiryActivityTracking::insert($data_to_insert);
             DB::commit();
             return redirect()->back()->with('success',"Enquiry Activity data saved successfully!");
@@ -279,7 +287,7 @@ class EnquiryController extends Controller
                     'created_at'=>$current_time,
                     'updated_at'=>$current_time
                 ];
-           
+
             ExistingLoanDetail::insert($data_to_insert);
             DB::commit();
             return redirect()->back()->with('success',"Existing Loan data saved successfully!");
@@ -292,14 +300,14 @@ class EnquiryController extends Controller
 
     public function save_eligible_loan_amount(Request $request){
         try{
-            
+
             $enquiry = Enquiry::find($request->enquiry_id);
             $enquiry->eligible_loan_amount = $request->eligible_loan_amount;
             $enquiry->save();
 
             return redirect()->back()->with('success',"Eligible Loan Amount data saved successfully!");
         }catch(Exception $e){
-           
+
             return redirect()->back()->with('error',$e->getMessage().",line:".$e->getLine());
         }
     }
@@ -307,14 +315,27 @@ class EnquiryController extends Controller
 
     public function change_enquiry_status(Request $request){
         try{
-            
+
+            DB::beginTransaction();
             $enquiry = Enquiry::find($request->enquiry_id);
             $enquiry->status = $request->status;
             $enquiry->save();
 
+            $current_time = date("Y-m-d H:i:s");
+
+            $enquiry_tracking_data = [
+                'enquiry_id'=>$enquiry->id,
+                'status'=>$request->status,
+                'created_at'=>$current_time,
+                'updated_at'=>$current_time
+            ];
+
+            EnquiryStatusTracking::create($enquiry_tracking_data);
+            DB::commit();
+
             return redirect()->back()->with('success',"Enquiry Status Updated successfully!");
         }catch(Exception $e){
-           
+            DB::rollback();
             return redirect()->back()->with('error',$e->getMessage().",line:".$e->getLine());
         }
     }
@@ -322,20 +343,20 @@ class EnquiryController extends Controller
 
     public function asign_propose_bank(Request $request){
         try{
-            
+
             $enquiry = Enquiry::find($request->enquiry_id);
             $enquiry->propose_bank_id = $request->propose_bank_id;
             $enquiry->save();
 
             return redirect()->back()->with('success',"Propose Bank added successfully!");
         }catch(Exception $e){
-           
+
             return redirect()->back()->with('error',$e->getMessage().",line:".$e->getLine());
         }
     }
 
     public function getDeleteSelectedImages(Request $request){
-        
+
         try{
             $image_name = $request->image_name;
             $enquiry_id = $request->enquiry_id;
@@ -354,10 +375,10 @@ class EnquiryController extends Controller
             unlink(public_path().'/uploads/'.$image_name);
 
             return 'success';
-       
+
         }catch(Exception $e){
             return $e->getMessage();
         }
-                
+
     }
 }

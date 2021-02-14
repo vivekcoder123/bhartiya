@@ -13,6 +13,7 @@ class Staff extends Model
 
     protected $table = 'staff';
     protected $guarded = ["id"];
+    const PERMISSIONS = ['Services','Staffs','Users','Clients'];
 
     public function designation(){
     	return $this->hasOne('App\Models\Designation','id','designation_id');
