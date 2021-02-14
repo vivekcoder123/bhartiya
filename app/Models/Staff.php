@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Staff extends Model
+class Staff extends Authenticatable
 {
     use HasFactory;
     const SINGLE = "S";
@@ -13,6 +13,7 @@ class Staff extends Model
 
     protected $table = 'staff';
     protected $guarded = ["id"];
+    const PERMISSIONS = ['Services','Staffs','Users','Clients'];
 
     public function designation(){
     	return $this->hasOne('App\Models\Designation','id','designation_id');

@@ -63,6 +63,18 @@
           height: 0;
           overflow-y: hidden;
       }
+      .container{
+          max-width:960px !important;
+      }
+      .modal-dialog{
+          max-width:70%;
+      }
+      .btn{
+          cursor: pointer;
+      }
+      .logo-sm{
+        height:80px !important;
+      }
     </style>
 @yield('css')
 <body>

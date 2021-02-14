@@ -41,7 +41,7 @@
                             Create New Staff
                         </button>
                     </div>
-                    
+
                     <div class="table-responsive">
 
                 <table class="table table-bordered table-striped" id="datatable">
@@ -57,15 +57,15 @@
                             <th>Incentives</th>
                             <th>Business Targets</th>
                             <th>Details</th>
-                            
-                            
+
+
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($staffs as $staff)
                         <tr>
                             <td>
-                                <i class="fa fa-edit btn btn btn-outline-success getEditStaffData" id="getEditStaffData" data-value="{{collect($staff)}}" data-staff_id="{{$staff->id}}"></i>   
+                                <i class="fa fa-edit btn btn btn-outline-success getEditStaffData" id="getEditStaffData" data-value="{{collect($staff)}}" data-staff_id="{{$staff->id}}"></i>
 
                             </td>
                             <td>{{$staff->employee_id}}</td>
@@ -75,40 +75,40 @@
 
                                 <button type="button" class="btn btn-outline-purple btn-round dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Services <i class="mdi mdi-chevron-down"></i></button>
 
-                                
+
                                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
-                                        
-                                        @foreach($staff->services as $s)  
+
+                                        @foreach($staff->services as $s)
                                             <a class="dropdown-item" href="#">{{$s->service_type}}</a>
                                          @endforeach
-                                        
+
                                     </div>
-                            
+
                             </td>
                             <td>{{$staff->designation->name}}</td>
                             <td>
 
                                 <button type="button" class="btn btn-outline-purple btn-round dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Permissions <i class="mdi mdi-chevron-down"></i></button>
 
-                                
+
                                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
-                                        
-                                        @foreach(explode(',',$staff->permissions) as $p)  
+
+                                        @foreach(explode(',',$staff->permissions) as $p)
                                             <a class="dropdown-item" href="#">{{$p}}</a>
                                          @endforeach
-                                        
+
                                     </div>
-                            
+
                             </td>
 
                             <td><button type="button" class="btn btn-outline-secondary btn-round  viewIncentives" data-values="{{$staff->incentives}}" data-staff_id="{{$staff->id}}"><i class="fa fa-eye"></i> View </button></td>
-                                
+
                             <td><button type="button" class="btn btn-outline-secondary btn-round  viewTargets" data-values="{{$staff->targets}}" data-service="{{$staff->services}}" data-staff_id="{{$staff->id}}"><i class="fa fa-eye"></i> View</button></td>
 
                             <td><button type="button" class="btn btn-outline-dark btn-round viewdetails" data-values="{{$staff}}" data-staff_id="{{$staff->id}}">More</button></td>
-                
-                            
-                            
+
+
+
                         </tr>
                         @endforeach
                     </tbody>
@@ -130,15 +130,10 @@
             </button>
         </div>
         <div class="modal-body ">
-            <div class="card">                                       
-                <div class="card-body"> 
-                    <h4 class="header-title mt-0 mb-3">Incentives</h4>
-
-                    <div class="slimscroll activity-scroll">
-                            
-                                
-                        <div class="incentivesList activity" style="max-height: 250px; overflow: auto;"></div>
-                        <h4 class="header-title mt-0 mb-3">Create Incentives</h4>
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <h4 class="header-title mt-0 mb-3">Add Incentives</h4>
                         <form class="needs-validation was-validated" action="{{url('/admin/save_staff_incentive')}}" method="POST">
                             {{ csrf_field() }}
                             <div id="form-content" class="incentivesForm">
@@ -147,6 +142,12 @@
                             <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mt-0 mb-3 text-center">Incentives</h4>
+                    <div class="incentivesList activity"></div>
                 </div>
             </div>
         </div>
@@ -170,14 +171,9 @@
             </button>
         </div>
         <div class="modal-body ">
-            <div class="card">                                       
-                <div class="card-body"> 
-                    <h4 class="header-title mt-0 mb-3">Targets</h4>
-
-                    <div class="slimscroll activity-scroll">
-                            
-                                
-                        <div class="targetsList activity" style="max-height: 218px; overflow: auto;"></div>
+            <div class="card">
+                <div class="card-body">
+                    <div>
                         <h4 class="header-title mt-0 mb-3">Create Business Targets</h4>
                         <form class="needs-validation was-validated" action="{{url('/admin/save_staff_target')}}" method="POST">
                             {{ csrf_field() }}
@@ -187,6 +183,12 @@
                             <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mt-0 mb-3 text-center">Targets</h4>
+                    <div class="targetsList activity"></div>
                 </div>
             </div>
         </div>
@@ -210,11 +212,11 @@
             </button>
         </div>
         <div class="modal-body ">
-            <div class="card">                                       
-                <div class="card-body"> 
+            <div class="card">
+                <div class="card-body">
                     <div class="detailsData">
 
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>
@@ -421,7 +423,7 @@
                                     <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Resume</label>
                                     <div class="col-lg-9">
                                     <input type="file" class="custom-file-input"  name="resume">
-                                    
+
                                     <label class="custom-file-label" for="customFile">file</label>
                                 </div>
                                 </div><!--end form-group-->
@@ -488,13 +490,9 @@
                                     <label for="txtCreditCardNumber" class="col-lg-3 col-form-label">Permissions</label>
                                     <div class="col-lg-9">
                                         <select name="permissions[]" type="text" class="select2 staffRquiredField mb-3 select2-multiple select2-hidden-accessible" multiple >
-                                            
-                                            <option value="staffs">Staff</option>
-                                            <option value="services">Service</option>
-                                            <option value="enquiries">Client Enquiries</option>
-                                            <option value="users">Users</option>
-                                            
-                                            
+                                            @foreach($permissions as $permission)
+                                            <option value="{{$permission}}">{{$permission}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div><!--end form-group-->
@@ -505,7 +503,7 @@
                                     <div class="col-lg-9">
 
                                         <select name="service_id[]" type="text" class="select2 staffRquiredField mb-3 select2-multiple select2-hidden-accessible" multiple >
-                                            
+
                                             @foreach($services as $l)
                                             <option value="{{$l->id}}">{{$l->service_type}}</option>
                                             @endforeach
@@ -513,9 +511,9 @@
                                     </div>
                                 </div><!--end form-group-->
                             </div>
-                            
+
                         </div><!--end row-->
-                        
+
                     </fieldset><!--end fieldset-->
 
                     <h3>Confirm Detail</h3>
@@ -531,9 +529,9 @@
 
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-                        
+
                     </fieldset><!--end fieldset-->
-                    
+
             </form>
         </div>
         <div class="modal-footer">
@@ -592,7 +590,7 @@
                     </button>
                 </div>
                 <div id="EditStaffModalBody">
-                    
+
                 </div>
             </div>
             <!-- Modal footer -->
@@ -609,28 +607,14 @@
 @section('js')
 
     <script>
-       
+
         var services = {!! json_encode($services) !!};
         var allTargets = {!! json_encode($targets) !!};
         var allStaffs = {!! json_encode($all_staffs) !!};
         var designations = {!! json_encode($designations) !!};
         var locations = {!! json_encode($locations) !!};
+        var permissions = {!! json_encode($permissions) !!}
 
-        var AllPermissions = [
-            {
-                value:'services',
-                text:'Services'
-            },
-            {
-                value:'staffs',
-                text:'Staffs'
-            },
-            {
-                value:'clients',
-                text:'Clients'
-            }
-        ];
-        
         $(document).ready(function(){
             $("a[href$='#finish']").css("display", "none");
         });
@@ -701,7 +685,7 @@
 
         $(document).on("click","#getUpdateId",function(){
                 id = $(this).data('id');
-                
+
                 $.ajax({
                     method:'POST',
                     url:`/admin/Staffs/change-status`,
@@ -710,14 +694,14 @@
                   if(response == '1'){
                     $('#updateMessage'+id).text('Active');
                     $('#StatusStaffModal').modal('show');
-                    setInterval(function(){ 
+                    setInterval(function(){
                             $('#StatusStaffModal').modal('hide');
                     }, 4000);
                   }
                   if(response == '0'){
                     $('#updateMessage'+id).text('Not Active');
                     $('#StatusStaffModal').modal('show');
-                    setInterval(function(){ 
+                    setInterval(function(){
                             $('#StatusStaffModal').modal('hide');
                     }, 4000);
                   }
@@ -732,10 +716,10 @@
             var incentives = $(this).data("values");
             console.log(incentives);
             var staff_id = $(this).data("staff_id");
-            
+
             var htmlList = '';
             var htmlForm = '';
-            
+
             incentives.forEach(function(incentive){
                 htmlList += `<div class="activity-info">
                                 <div class="icon-info-activity">
@@ -745,9 +729,9 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h6 class="m-0 w-75">${incentive.incentive}</h6>
                                         <span class="text-muted d-block">${incentive.created_at}</span>
-                                        
+
                                     </div>
-                                    <p class="text-muted mt-1">${incentive.remarks} 
+                                    <p class="text-muted mt-1">${incentive.remarks}
                                     </p>
                                 </div>
                             </div>`;
@@ -769,7 +753,7 @@
 
             $("#incentivesModal .incentivesList").html(htmlList);
             $("#incentivesModal .incentivesForm").html(htmlForm);
-            
+
             $("#incentivesModal").modal("show");
         });
 
@@ -777,12 +761,12 @@
         $(".viewTargets").on("click",function(){
             var targets = $(this).data("values");
             var staff_services = $(this).data("service");
-           
+
             var staff_id = $(this).data("staff_id");
-            
+
             var htmlList = '';
             var htmlForm = '';
-            
+
             targets.forEach(function(target){
                 htmlList += `<div class="activity-info">
                                 <div class="icon-info-activity">
@@ -840,7 +824,7 @@
 
             $("#targetsModal .targetsList").html(htmlList);
             $("#targetsModal .targetsForm").html(htmlForm);
-            
+
             $("#targetsModal").modal("show");
         });
 
@@ -849,10 +833,10 @@
         var d = $(this).data("values");
         console.log(d);
         var staff_id = $(this).data("staff_id");
-        
+
         var htmlList =`<div class="cart-wrap ftco-animate">
                 <div class="cart-total mb-3">
-                  <h5>Persional Details</h5> 
+                  <h5>Persional Details</h5>
                   <hr>
                   <p class="d-flex total-price">
                     <span>Email</span>
@@ -911,11 +895,11 @@
                     <span id="final_price">${d.anniversary}</span>
                   </p>
                 </div>
-                
+
               </div>`;
-      
+
         $("#detailsModal .detailsData").html(htmlList);
-        
+
         $("#detailsModal").modal("show");
     });
 
@@ -933,7 +917,7 @@
                 vPool += `<div class="text-danger font-weight-bold mb-1">${val}</div>`;
             });
 
-            
+
             if(jQuery("select[name=permissions]").length == 0) {
                 vPool += `<div class="text-danger font-weight-bold mb-1">*Permissions is required!</div>`;
             }
@@ -950,7 +934,7 @@
                 vPool += `<div class="text-danger font-weight-bold mb-1">*Location is required!</div>`;
             }
             $('#staffFormError').html(vPool);
-            
+
             return false;
         }
 
@@ -972,7 +956,7 @@
                 vPool += `<div class="text-danger font-weight-bold mb-1">${val}</div>`;
             });
 
-            
+
             if($("#updatePermissions").length == 0) {
                 vPool += `<div class="text-danger font-weight-bold mb-1">*Permissions is required!</div>`;
             }
@@ -989,7 +973,7 @@
                 vPool += `<div class="text-danger font-weight-bold mb-1">*Location is required!</div>`;
             }
             $('#staffFormError1').html(vPool);
-            
+
             return false;
         }
 
@@ -1005,11 +989,11 @@
             var services_id = staff.services.map(function(service){
                 return service.id;
             })
-            
+
             var html = `<form id="form-horizontal1" onsubmit="return staffUpdateFormSubmit()" class="form-horizontal form-wizard-wrapper" action="{{url('admin/staffs/update/${staff_id}')}}" method="POST" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
-                
+
 
                 <h3>Personal Details</h3>
                     <fieldset>
@@ -1197,7 +1181,7 @@
                                     <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Resume</label>
                                     <div class="col-lg-9">
                                     <input type="file" class="custom-file-input"  name="resume">
-                                    
+
                                     <label class="custom-file-label" for="customFile">file</label>
 
                                 </div>
@@ -1217,7 +1201,7 @@
                                 </div><!--end form-group-->
                             </div><!--end col-->
                             <div class="col-md-6">
-                             
+
                               <div class="form-group row ">
                                     <label for="txtCompanyShipping" class="col-lg-3 col-form-label">Qualification Certificates</label>
                                     <div class="col-lg-9">
@@ -1230,7 +1214,7 @@
 
                           if(staff.pan.length>0){
                             var pan = staff.pan.split(',');
-                            
+
                             pan.map((i, e) => {
 
                             html+=`
@@ -1249,14 +1233,14 @@
                                     </div>
                                 </div>`;
                             })
-                            
-                            
+
+
                           }
-                          
+
 
                           if(staff.aadhar.length>0){
                             var aadhar = staff.aadhar.split(',');
-                            
+
                             aadhar.map((i, e) => {
 
                             html+=`
@@ -1275,13 +1259,13 @@
                                     </div>
                                 </div>`;
                             })
-                            
-                            
+
+
                           }
-                          
+
 
                           if(staff.resume){
-                            
+
                             html+=`
                             <div class="row my-3">
                                 <div class=" col-md-5">Resume</div>
@@ -1297,13 +1281,13 @@
                                         </div>
                                     </div>
                                 </div>`;
-                            
+
                           }
-                          
+
 
                           if(staff.exp_cert.length>0){
                             var exp_cert = staff.exp_cert.split(',');
-                            
+
                             exp_cert.map((i, e) => {
 
                             html+=`
@@ -1322,14 +1306,14 @@
                                     </div>
                                 </div>`;
                             })
-                            
-                            
+
+
                           }
-                          
+
 
                           if(staff.qual_cert.length>0){
                             var qual_cert = staff.qual_cert.split(',');
-                            
+
                             qual_cert.map((i, e) => {
 
                             html+=`
@@ -1348,10 +1332,10 @@
                                     </div>
                                 </div>`;
                             })
-                            
-                            
+
+
                           }
-                          
+
 
 
                 html+=`
@@ -1398,19 +1382,16 @@
                                 <div class="form-group row">
                                     <label for="txtCreditCardNumber" class="col-lg-3 col-form-label">Permissions</label>
                                     <div class="col-lg-9">
-                                        <select name="permissions[]" id="updatePermissions" type="text" class=" select2 staffRquiredField1 mb-3" multiple >
+                                        <select name="permissions[]" id="updatePermissions" type="text" class=" select2 staffRquiredField1 mb-3" multiple >`;
 
-                                        <option value="services" ${staffPermissions.includes('services')?'selected':''}>Services</option>
-                                        <option value="staffs" ${staffPermissions.includes('staffs')?'selected':''}>Staffss</option>
-                                        <option value="users" ${staffPermissions.includes('users')?'selected':''}>Users</option>
-                                        <option value="enquiries" ${staffPermissions.includes('enquiries')?'selected':''}>Clients Enquiries</option>
-                                            
-                                            
-                                            
-                                        </select>
+                        permissions.forEach(function(p){
+                            html += `<option value="${p}" ${staffPermissions.includes(`${p}`)?'selected':''}>${p}</option>`;
+                        });
+
+                        html += `</select>
                                     </div>
-                                </div><!--end form-group-->
-                            </div><!--end col-->
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
                                     <label for="ddlCreditCardType" class="col-lg-3 col-form-label">Services</label>
@@ -1426,9 +1407,9 @@
                                     </div>
                                 </div><!--end form-group-->
                             </div>
-                            
+
                         </div><!--end row-->
-                        
+
                     </fieldset><!--end fieldset-->
 
                     <h3>Confirm Detail</h3>
@@ -1437,19 +1418,19 @@
                             <label class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input">
                                 <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Please Click on Submit to Create Staff</span>
+                                <span class="custom-control-description">Please Click on Update to Edit Staff</span>
                             </label>
 
                             <div class="p-3" id="staffFormError1"></div>
 
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>
-                        
+
                     </fieldset><!--end fieldset-->
 
 
                 </form>`;
-          
+
             $("#EditStaffModal .modal-body #EditStaffModalBody").html(html);
 
             $("#form-horizontal1").steps({
@@ -1457,12 +1438,12 @@
                 bodyTag: "fieldset",
                 transitionEffect: "slide"
             });
-            
+
             $("#EditStaffModal").modal("show");
             $(".select2").select2();
         });
-    
-       
+
+
 
 
 
@@ -1482,7 +1463,7 @@
                  $(el).parent().parent().parent().parent().css('background','tomato');
                  $(el).parent().parent().parent().parent().fadeOut(function(){
                     $(this).remove();
-                 });            
+                 });
             }
         }).fail(error=>{
             console.log('error',error);
