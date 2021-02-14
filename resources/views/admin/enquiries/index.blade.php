@@ -827,7 +827,7 @@
 
         var html = `<div class="col-md-12 mb-3">
                         <label for="validationCustom01">Update Status</label>
-                        <select class="form-control select2 serviceForExistingLoan" name="status" id="validationCustom01" required="">`;
+                        <select class="form-control select2" name="status" id="validationCustom01" required="">`;
 
                          statuses.forEach(res => {
                             Object.entries(res).forEach(([key, value]) => {
@@ -857,7 +857,7 @@
 
         var html = `<div class="col-md-12 mb-3">
                         <label for="validationCustom01">Propose Bank</label>
-                        <select class="form-control select2 serviceForExistingLoan" name="propose_bank_id" id="validationCustom01" required="">`;
+                        <select class="form-control select2" name="propose_bank_id" id="validationCustom01" required="">`;
 
                          banks.forEach(function(d){
                             html += `<option value="${d.id}">${d.name}</option>`;
