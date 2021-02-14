@@ -141,12 +141,14 @@
         <div class="modal-body ">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title mt-0 mb-3">Activities</h4>
+                    <h4 class="header-title mt-0 mb-3 text-center">Activities</h4>
+                    <div class="activitiesList activity"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
 
                     <div class="slimscroll activity-scroll">
-
-
-                        <div class="activitiesList activity" style="max-height: 250px; overflow: auto;"></div>
                         <h4 class="header-title mt-0 mb-3">Create Activities</h4>
                         <form class="needs-validation was-validated" action="{{url('/admin/save_enquiry_activity')}}" method="POST">
                             {{ csrf_field() }}
