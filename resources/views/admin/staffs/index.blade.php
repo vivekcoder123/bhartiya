@@ -945,7 +945,7 @@
      function staffUpdateFormSubmit(){
 
         var arr = $('.staffRquiredField1').map((i, e) => {
-            if(!e.value && $(e).attr("placeholder")){
+            if(!$(e).value && $(e).attr("placeholder")){
                 var sd = $(e).attr('placeholder');
                 return '*'+sd+' '+'is required!';
             }

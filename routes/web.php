@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\CorporateController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\BankController;
@@ -74,12 +75,25 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 		/******************Start Bank*******************/
+
 		Route::post('/banks/change-status',[BankController::class,'changeStatus']);
 		Route::resource('/banks', BankController::class);
 		Route::get('/get-banks', [BankController::class,'getBanks'])->name('get-banks');
 
 
 		/********************End Bank********************/
+
+
+		/******************Start Corporate*******************/
+
+		Route::put('corporates/update/{id}',[CorporateController::class,'updateCorporate']);
+		Route::post('/change_corporate_status',[CorporateController::class,'change_corporate_status']);	
+		Route::resource('/corporates', CorporateController::class);
+		;
+
+
+		/********************End Corporate********************/
+
 
 
 		/******************Start Service*******************/

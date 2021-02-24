@@ -46,6 +46,16 @@
                 </li>
                 @endif
 
+                @if(Auth::user()->email == 'admin@gmail.com' || in_array("Corporate",explode(",",Auth::user()->permissions)))
+                <li>
+                    <a href="javascript: void(0);"><i class=" dripicons-user-id"></i><span>Corporates</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="nav-second-level in mm-show" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="{{url('/admin/corporates')}}"><i class="ti-control-record"></i>Corporate Management</a></li>
+
+                    </ul>
+                </li>
+                @endif
+
             </ul>
         </div>
         <!-- end left-sidenav-->
